@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import styles from './styles.js';
 
-//import ImagePicker from 'react-native-image-picker';
+import ImagePicker from 'react-native-image-picker';
 
 
 const options = {
