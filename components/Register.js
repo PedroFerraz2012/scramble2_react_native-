@@ -46,8 +46,6 @@ export default class Register extends Component {
     return (
       <View style={styles.container}>
         
-          <Text style={styles.subtext}>Sign Up:</Text>
-        
           <TextInput
             value={this.state.name}
             onChangeText={name => this.setState({ name })}

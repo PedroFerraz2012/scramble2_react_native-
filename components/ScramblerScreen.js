@@ -8,6 +8,7 @@ import {
   TextInput,
   TouchableOpacity,
   ThemeProvider,
+  Icon
 } from 'react-native';
 import styles from './styles.js';
 
@@ -26,13 +27,17 @@ const options = {
 
 
 export default class ScramblerScreen extends Component {
-
-
-
-  state = {
-    avatarSource: null,
-    //hasPic: false,
+  constructor() {
+    super();
+    this.state = {
+      avatarSource: null,
+      name: null,
+      hint: null,
+      pswd: null,
+      
+    };
   }
+
 
   //pick picture selecting from camera or gallery
   /*
@@ -60,7 +65,7 @@ export default class ScramblerScreen extends Component {
 
   // Launch Camera:
   takePicture = async () => {
-    
+
     ImagePicker.launchCamera(options, (response) => {
       console.log('Response = ', response);
 
@@ -120,6 +125,7 @@ export default class ScramblerScreen extends Component {
 
 
 
+
   static navigationOptions = {
 
     headerStyle: {
@@ -128,11 +134,6 @@ export default class ScramblerScreen extends Component {
       title: 'Dashboard',
     }
   };
-
-  //inserting hint to unscramble the image
-  state = {
-    hint: '',
-  }
 
   render() {
     return (
@@ -151,51 +152,78 @@ export default class ScramblerScreen extends Component {
           </TouchableOpacity>
         </View>
 
-        <View style={styles.whiteBox}>
-          {
-            //to see the image and buttons
-            this.state.avatarSource &&
 
-            <Image source={{ uri: this.state.avatarSource }}
-              style={{ width: '90%', height: 200, resizeMode: 'contain' }}
-            />
+
+        <View style={styles.inputContainer}>
+
+          {this.state.avatarSource &&
+
+            <TextInput
+              style={styles.inputStyle}
+              value={this.state.name}
+              onChangeText={name => this.setState({ name })}
+              placeholder="Picture Name"
+
+            />}
+          {this.state.name &&
+            <Image style={styles.imageBtnSmall} source={require('../assets/imgs/okBtn.png')}></Image>
           }
         </View>
-        {/* <View style={styles.line}>
-          <TouchableOpacity style={styles.roundedButton} onPress={()=>{
-            imgScramble({
-              image:this.state.avatarSource, // source
-              seed:'Kappa', // seed
-              sliceSize:5, // slice size
-              dest:this.state.avatarSource // dest
-          },function(err){
-              
-          })
-          }}>
-            <Image style={styles.imageBtn} source={require('../assets/imgs/blindBtn.png')}></Image>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.roundedButton} onPress={()=>{}}>
-            <Image style={styles.imageBtn} source={require('../assets/imgs/seeBtn.png')}></Image>
-          </TouchableOpacity>
-        </View> */}
 
+        <View style={styles.inputContainer}>
+          {this.state.name &&
 
-
-        <View style={styles.line}>
-          <TextInput
-            style={styles.input}
-            placeholder="give it a hint or not"
-            value={this.state.hint}
-            onChangeText={hint => this.state(() => { })}
-          ></TextInput>
-
-          <TouchableOpacity style={styles.roundedButton} onPress={() => { }}>
-            <Image style={styles.imageBtn} source={require('../assets/imgs/okBtn.png')}></Image>
-          </TouchableOpacity>
+            <TextInput
+              style={styles.inputStyle}
+              value={this.state.pswd}
+              placeholder="Give it a password"
+              onChangeText={pswd => this.setState({ pswd })}
+            ></TextInput>
+          }
+          {this.state.pswd &&
+            <Image style={styles.imageBtnSmall} source={require('../assets/imgs/okBtn.png')}></Image>
+          }
 
         </View>
 
-        <View style={styles.line}>
+        <View style={styles.inputContainer}>
+          {this.state.pswd &&
+
+            <TextInput
+              style={styles.inputStyle}
+              value={this.state.hint}
+              placeholder="Give it a hint for password"
+              onChangeText={hint => this.setState({ hint })}
+            ></TextInput>}
+
+          {this.state.hint &&
+            <Image style={styles.imageBtnSmall} source={require('../assets/imgs/okBtn.png')}></Image>
+          }
+
+        </View>
+
+
+
+        
+          {this.state.hint && 
+          <View style={styles.line}>
+          <TouchableOpacity style={styles.button} onPress={() => { }}>
+            <Text style={styles.buttonText}>SAVE PICTURE</Text>
+          </TouchableOpacity>
+          </View>
+            
+          }
+
+
+        {this.state.avatarSource &&
+          <View style={styles.whiteBox}>
+            <Image source={{ uri: this.state.avatarSource }}
+              style={{ width: '90%', height: '100%', resizeMode: 'contain' }}
+            />
+          </View>
+        }
+
+        {/* <View style={styles.line}>
           <TextInput
             style={styles.input}
             placeholder="send to"
@@ -207,11 +235,11 @@ export default class ScramblerScreen extends Component {
             <Image style={styles.imageBtn} source={require('../assets/imgs/sendBtn.png')}></Image>
           </TouchableOpacity>
 
-        </View>
-        
+        </View> */}
 
 
-      </View>
+
+      </View >
     );
   }
 }

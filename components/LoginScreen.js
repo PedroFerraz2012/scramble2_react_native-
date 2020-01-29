@@ -48,7 +48,7 @@ export default class LoginScreen extends Component {
       <View style={styles.container}>
 
 
-        <Image style={styles.logo} source={require('../assets/imgs/scramblerLogo.png')}></Image>
+        
         <TextInput
           style={styles.input}
           placeholder="Type your email"
