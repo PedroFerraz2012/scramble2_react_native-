@@ -7,9 +7,11 @@ import {
   Text,
   StatusBar,
   Button,
-  Image
+  Image,
+  Alert
 } from 'react-native';
 import styles from './styles';
+import axios from 'axios';
 
 // import {
 //   Header,
@@ -20,8 +22,22 @@ import styles from './styles';
 // } from 'react-native/Libraries/NewAppScreen';
 
 
+
+
 class HomeScreen extends React.Component {
     
+  myExample = () => {
+    //Alert.alert('btn ok')
+      //axios.get('https://acx.io:443//api/v2/tickers.json')
+      axios.get('http://localhost:3000/products') // localhost worked!!!
+      .then(function (response){
+        console.log(JSON.stringify(response));
+        Alert.alert(JSON.stringify(response))
+      }).catch(error => {
+        console.log(JSON.stringify(error))
+        Alert.alert(JSON.stringify(error))
+      })
+    }
 
     static navigationOptions = {
       headerStyle: {
@@ -38,6 +54,8 @@ class HomeScreen extends React.Component {
         <Button
           title="Go to Jane's profile"
           onPress={() => navigate('Login', {name: 'Jane'})}
+          //onPress={this.myExample}
+          
         />
         </View>
       );

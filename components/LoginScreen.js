@@ -14,12 +14,13 @@ import {
 } from 'react-native';
 import styles from './styles';
 import api from './api';
+import axios from 'axios';
 
 export default class LoginScreen extends Component {
 
-  state = {email:'',password:''}
+  state = { email: '', password: '' }
   onChangeText = (key, val) => {
-    this.setState({ [key]: val})
+    this.setState({ [key]: val })
   }
 
   //using navigation
@@ -31,19 +32,61 @@ export default class LoginScreen extends Component {
     },
   };
 
-   Login = () => {
+// something in the syntax is wrong, the server doesnt identify the object in api.js
+myExample = () => {
+
+    const user = {
+      email: this.state.email,
+      password: this.state.password,
+      Headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+      }}
+    //Alert.alert(JSON.stringify (user))
+    api.login(user).then((res) => {
+      console.log(JSON.stringify(res.body.message))
+      Alert.alert(JSON.stringify(res.body.message))
+      //   if(res.body.token) {
+      //   this.props.navigation.navigate("Scrambler")+this.res.id+this.res.token
+      // }
+    }).catch(error => {
+      console.log(JSON.stringify(error))
+      Alert.alert(JSON.stringify(error.message))
+    })}
+
+    Login = () => {
+    //Alert.alert('btn ok')
 
     const user = {
       email: this.state.email,
       password: this.state.password
     }
-    //Alert.alert(JSON.stringify (user))
-    api.login(user).then((res) => {
+    const myheader = {
+      Headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+      }}
 
-      if(res.body.token) {
-      this.props.navigation.navigate("Scrambler")+this.res.id+this.res.token
-    }
-    })
+      axios.post(
+        'https://ad9d3f5f.ngrok.io/user/login',
+        {email: this.state.email,
+        password: this.state.password},
+        {Headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+      }}
+        )
+      .then((res) => {
+        
+        console.log(JSON.stringify(res))
+        Alert.alert(JSON.stringify(res.data.message))
+        //   if(res.body.token) {
+        //   this.props.navigation.navigate("Scrambler")+this.res.id+this.res.token
+        // }
+      }).catch(error => {
+        console.log(JSON.stringify(error))
+        Alert.alert(JSON.stringify(error))
+      })
 
 
     // console.log(email);

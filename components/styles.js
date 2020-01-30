@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
   fontWeight: 'bold',
   padding:20,
   fontSize:40,
-  fontFamily: 'Haetten',
+  //fontFamily: 'Haetten',
   },
   logo:{
     width: '80%',
@@ -31,14 +31,14 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     padding:8,
     fontSize:15,
-    fontFamily: 'Haetten, Arial',
+    //fontFamily: 'Haetten, Arial',
     },
   text:{
     color: '#201E1E',
     //fontWeight: 'bold',
     padding:20,
     fontSize:12,
-    fontFamily: 'Arial',
+    //fontFamily: 'Arial',
   },
   input: {
     height: 40,
