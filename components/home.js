@@ -21,8 +21,14 @@ import styles from './styles';
 
 
 class HomeScreen extends React.Component {
+    
+
     static navigationOptions = {
-      title: 'Welcome',
+      headerStyle: {
+        backgroundColor: "#FFF212",
+        elevation: null,
+        //title: ,
+      },
     };
     render() {
       const {navigate} = this.props.navigation;

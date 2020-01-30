@@ -9,53 +9,65 @@ import {
   Image,
   CheckBox,
   AsyncStorage,
+  Alert,
+  KeyboardAvoidingView
 } from 'react-native';
 import styles from './styles';
+import api from './api';
 
 export default class LoginScreen extends Component {
 
-  //setting global variable for login
-  constructor() {
-    super();
-    this.state = {
-      email: "",
-      password: "",
-      //isAuthenticated = false,
-    };
+  state = {email:'',password:''}
+  onChangeText = (key, val) => {
+    this.setState({ [key]: val})
   }
+
   //using navigation
   static navigationOptions = {
     headerStyle: {
       backgroundColor: "#FFF212",
       elevation: null,
-      title: 'Login',
+      //title: 'Login',
     },
-    
   };
 
+   Login = () => {
 
-  async onLoginPress() {
-    const { email, password } = this.state;
-    console.log(email);
-    console.log(password);
-    await AsyncStorage.setItem("email", email);
-    await AsyncStorage.setItem("password", password);
-    this.props.navigation.navigate("Scrambler");
+    const user = {
+      email: this.state.email,
+      password: this.state.password
+    }
+    //Alert.alert(JSON.stringify (user))
+    api.login(user).then((res) => {
+
+      if(res.body.token) {
+      this.props.navigation.navigate("Scrambler")+this.res.id+this.res.token
+    }
+    })
+
+
+    // console.log(email);
+    // console.log(password);
+    // await AsyncStorage.setItem("email", email);
+    // await AsyncStorage.setItem("password", password);
+    // this.props.navigation.navigate("Scrambler");
   }
 
   render() {
     return (
-      <View style={styles.container}>
+      <KeyboardAvoidingView behavior="padding" style={styles.container}>
 
-
-        
         <TextInput
           style={styles.input}
           placeholder="Type your email"
           autoCapitalize="none"
+          keyboardType='email-address'
           autoCorrect={false}
-          value={this.state.email}
-          onChangeText={email => this.setState({ email })}
+          //value={this.state.email}
+          //ref= {(email)=> this.email = email}
+          //onSubmitEditing = {()=> this.password.focus()}
+          onChangeText={val => this.onChangeText('email', val)}
+          returnKeyType="next"
         ></TextInput>
 
         <TextInput
@@ -64,8 +76,10 @@ export default class LoginScreen extends Component {
           autoCapitalize="none"
           autoCorrect={false}
           secureTextEntry={true}
-          value={this.state.passwordl}
-          onChangeText={password => this.setState({ password })}
+          //value={this.state.passwordl}
+          //ref= {(password)=> this.password = password}
+          onChangeText={val => this.onChangeText('password', val)}
+          returnKeyType="go"
         ></TextInput>
 
         <View style={styles.line}>
@@ -73,7 +87,7 @@ export default class LoginScreen extends Component {
           <Text style={styles.text}>Remember me</Text>
 
 
-          <TouchableOpacity onPress={this.onLoginPress.bind(this)}>
+          <TouchableOpacity onPress={this.Login}>
             <Image style={styles.imageBtn} source={require('../assets/imgs/okBtn.png')}></Image>
           </TouchableOpacity>
         </View>
@@ -98,7 +112,7 @@ export default class LoginScreen extends Component {
 
 
 
-      </View>
+      </KeyboardAvoidingView>
 
     );
   }
