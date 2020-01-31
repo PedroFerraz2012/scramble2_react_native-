@@ -13,7 +13,6 @@ import styles from './styles';
 import axios from 'axios';
 import LogoTitle from './LogoTitle';
 
-
 export default class LoginScreen extends Component {
 
 
@@ -28,6 +27,7 @@ export default class LoginScreen extends Component {
     this.state = {
       user: '',
       isAuthenticated: false,
+      baseAPI: 'https://e45b3d64.ngrok.io'
     }
   }
   
@@ -49,12 +49,10 @@ export default class LoginScreen extends Component {
     headerTitle: () => <View style={styles.line}><LogoTitle/><Text style={styles.allText}>  LOGIN</Text></View>
   };}
 
-
-   Login = () => {
-    //Alert.alert('btn ok')
+  Login = () => {
 
     axios.post(
-      'https://f6898a99.ngrok.io/user/login',
+      this.state.baseAPI+'/user/login',
       {
         email: this.state.email,
         password: this.state.password
@@ -65,27 +63,24 @@ export default class LoginScreen extends Component {
           'Content-Type': 'application/json'
         }
       }
-    )
-      .then((res) => {
-        console.log('Response: ' + JSON.stringify(res))
+    ).then((res) => {
+      console.log('Response: ' + JSON.stringify(res))
 
-        if (res.data.token) {
-          console.log("logedIn");
-          const DB = {
-            userId: res.data.id,
-            token: res.data.token,
-            isAuthenticated: true
-          };
-          console.log(DB)
-          console.log('DB: ' + JSON.stringify(DB));
-          this.saveState(DB)
-        }
-      }).catch((error) => {
-           Alert.alert(JSON.stringify(error));
-           console.log(JSON.stringify(error));
-         });}
-      
-  
+      if (res.data.token) {
+        console.log("logedIn");
+        const DB = {
+          userId: res.data.id,
+          token: res.data.token,
+          isAuthenticated: true
+        };
+        console.log(DB)
+        console.log('DB: ' + JSON.stringify(DB));
+        this.saveState(DB)
+      }
+    }).catch((error) => {
+         Alert.alert(JSON.stringify(error));
+         console.log(JSON.stringify(error));
+       });}
 
 
   saveState = (DB) => {
