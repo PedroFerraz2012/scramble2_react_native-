@@ -70,10 +70,26 @@ componentWillUnmount(){
         
         
         <TouchableOpacity style={styles.button} onPress={() => navigate('Login')}>
-            <Text style={styles.buttonText}>Go to Login</Text>
+            <Text style={styles.buttonText}>Login</Text>
           </TouchableOpacity>
 
-        
+          <TouchableOpacity style={styles.button} onPress={() => navigate('Register')}>
+            <Text style={styles.buttonText}>Register</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.button} onPress={() => navigate('ForgetPassword')}>
+            <Text style={styles.buttonText}>Forgot Password</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.button} onPress={() => navigate('List')}>
+            <Text style={styles.buttonText}>Pictures List</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.button} onPress={() => navigate('Scrambler')}>
+            <Text style={styles.buttonText}>Scrambler</Text>
+          </TouchableOpacity>
+
+          
         </View>
       );
     }

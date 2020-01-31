@@ -101,9 +101,7 @@ export default class LoginScreen extends Component {
       
       <View  style={styles.container}>
 
-          <TouchableOpacity style={styles.button} onPress={() => navigate('Scrambler')}>
-            <Text style={styles.buttonText}>Scrambler page</Text>
-          </TouchableOpacity>
+          
 
           
         <TextInput
@@ -126,15 +124,10 @@ export default class LoginScreen extends Component {
           returnKeyType="go"
         ></TextInput>
 
-        <View style={styles.line}>
-          <CheckBox></CheckBox>
-          <Text style={styles.text}>Remember me</Text>
-
-
-          <TouchableOpacity onPress={this.Login}>
-            <Image style={styles.imageBtn} source={require('../assets/imgs/okBtn.png')}></Image>
+        
+        <TouchableOpacity style={styles.button} onPress={this.Login}>
+            <Text style={styles.buttonText}>Login</Text>
           </TouchableOpacity>
-        </View>
 
         <Text style={styles.allText}
           onPress={() => this.props.navigation.navigate("Register")}>

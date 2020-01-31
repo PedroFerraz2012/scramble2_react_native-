@@ -11,7 +11,10 @@ import {
   AsyncStorage
 } from "react-native";
 import styles from './styles.js';
+import LogoTitle from './LogoTitle';
 import { StackNavigator } from "react-navigation";
+
+
 
 export default class Register extends Component {
   constructor(props) {
@@ -24,12 +27,22 @@ export default class Register extends Component {
     };
   }
 
-  static navigationOptions = {
+  //using navigation
+  static navigationOptions = ({navigation, navigationOptions})=>{
+    const {params} = navigation.state;
+
+    return{
     headerStyle: {
-      backgroundColor: "#FFF212",
-      elevation: null
-    }
-  };
+      backgroundColor: "#FFF212"
+    },
+    
+    headerTitleStyle: {
+      fontWeight: 'bold',
+      textAlign: "center",
+    },
+    title: 'LOGIN',
+    headerTitle: () => <View style={styles.line}><LogoTitle/><Text style={styles.allText}>  REGISTER</Text></View>
+  };}
 
   async onRegisterPress() {
     const { email, password, name } = this.state;

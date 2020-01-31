@@ -100,10 +100,11 @@ export default class ScramblerScreen extends Component {
   };}
 
   render() {
+    const { navigate } = this.props.navigation;
     return (
       <View style={styles.container}>
 
-        {/* <Image style={styles.logo} source={require('../assets/imgs/scramblerLogo.png')}></Image> */}
+    
 
         <View style={styles.line}>
           <Text style={styles.allText}>Pick a picture</Text>
@@ -114,6 +115,11 @@ export default class ScramblerScreen extends Component {
           <TouchableOpacity style={styles.roundedButton} onPress={this.pickLibrary}>
             <Image style={styles.imageBtn} source={require('../assets/imgs/addPicture.png')} ></Image>
           </TouchableOpacity>
+
+          <TouchableOpacity style={styles.roundedButton} onPress={() => navigate('List')}>
+        <Image style={styles.imageBtn} source={require('../assets/imgs/seeBtn.png')}></Image>
+        </TouchableOpacity>
+
         </View>
         {/* <Text>{ navigation.getParam(userId) }</Text>
 <Text>{ navigation.getParam(token) }</Text> */}

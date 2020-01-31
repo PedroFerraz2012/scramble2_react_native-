@@ -24,6 +24,7 @@ import LoginScreen from './components/LoginScreen';
 import ScramblerScreen from './components/ScramblerScreen';
 import Register from './components/Register';
 import ForgetPassword from './components/ForgetPassword';
+import List from './components/List';
 
 const MainNavigator = createStackNavigator({
   Home: {screen: HomeScreen},
@@ -31,6 +32,7 @@ const MainNavigator = createStackNavigator({
   Scrambler: {screen: ScramblerScreen},
   Register: {screen: Register},
   ForgetPassword: {screen: ForgetPassword},
+  List: {screen: List}
 });
 
 const App = createAppContainer(MainNavigator);

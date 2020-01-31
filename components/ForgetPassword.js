@@ -9,6 +9,7 @@ import {
   TouchableOpacity
 } from "react-native";
 import styles from './styles';
+import LogoTitle from './LogoTitle';
 
 export default class ForgetPassword extends Component {
   constructor() {
@@ -18,12 +19,22 @@ export default class ForgetPassword extends Component {
       password: "",
     };
   }
-  static navigationOptions = {
+  //using navigation
+  static navigationOptions = ({navigation, navigationOptions})=>{
+    const {params} = navigation.state;
+
+    return{
     headerStyle: {
-      backgroundColor: "#FFF212",
-      elevation: null
-    }
-  };
+      backgroundColor: "#FFF212"
+    },
+    
+    headerTitleStyle: {
+      fontWeight: 'bold',
+      textAlign: "center",
+    },
+    title: 'LOGIN',
+    headerTitle: () => <View style={styles.line}><LogoTitle/><Text style={styles.allText}>  Forgot Pswd</Text></View>
+  };}
 
   onForgetPress() {
         this.props.navigation.navigate("Login");
@@ -44,7 +55,7 @@ export default class ForgetPassword extends Component {
           style={styles.button}
           onPress={this.onForgetPress.bind(this)}
         >
-          <Text style={styles.buttonText}>Forget Password</Text>
+          <Text style={styles.buttonText}>Forgot Password</Text>
         </TouchableOpacity>
       </View>
     );
