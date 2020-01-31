@@ -1,41 +1,23 @@
 import React, { Component } from 'react';
 
 import {
-  StyleSheet,
-  Button,
   View,
   Text,
   TextInput,
   TouchableOpacity,
   Image,
   CheckBox,
-  AsyncStorage,
   Alert,
-  KeyboardAvoidingView
 } from 'react-native';
 import styles from './styles';
-import api from './api';
 import axios from 'axios';
+import LogoTitle from './LogoTitle';
 
-
-class LogoTitle extends React.Component {
-  render() {
-
-    return (
-    <View style={styles.line}>
-      <Image
-        source={require('../assets/imgs/scramblerLogo.png')}
-        style={{ width: 136, height: 30 }}
-      /><Text style={styles.allText}>  LOGIN</Text>
-      </View>
-    );
-  }
-}
 
 export default class LoginScreen extends Component {
 
 
-  state = { email: '', password: ''}
+  state = { email: '', password: '', pageTitle: 'LOGIN'}
   onChangeText = (key, val) => {
     this.setState({ [key]: val })
   }
@@ -63,7 +45,8 @@ export default class LoginScreen extends Component {
       fontWeight: 'bold',
       textAlign: "center",
     },
-    headerTitle: () => <LogoTitle/>
+    title: 'LOGIN',
+    headerTitle: () => <View style={styles.line}><LogoTitle/><Text style={styles.allText}>  LOGIN</Text></View>
   };}
 
 

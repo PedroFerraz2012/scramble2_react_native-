@@ -8,7 +8,7 @@ import {
   AppRegistry,
 } from 'react-native';
 import styles from './styles.js';
-
+import LogoTitle from './LogoTitle';
 import ImagePicker from 'react-native-image-picker';
 
 
@@ -82,20 +82,28 @@ export default class ScramblerScreen extends Component {
 
 
 
-  static navigationOptions = {
+  //using navigation
+  static navigationOptions = ({navigation, navigationOptions})=>{
+    const {params} = navigation.state;
 
+    return{
     headerStyle: {
-      backgroundColor: "#FFF212",
-      elevation: null
+      backgroundColor: "#FFF212"
     },
-    title: 'Scrambler',
-  };
+    
+    headerTitleStyle: {
+      fontWeight: 'bold',
+      textAlign: "center",
+    },
+    title: 'LOGIN',
+    headerTitle: () => <LogoTitle/>
+  };}
 
   render() {
     return (
       <View style={styles.container}>
 
-        <Image style={styles.logo} source={require('../assets/imgs/scramblerLogo.png')}></Image>
+        {/* <Image style={styles.logo} source={require('../assets/imgs/scramblerLogo.png')}></Image> */}
 
         <View style={styles.line}>
           <Text style={styles.allText}>Pick a picture</Text>

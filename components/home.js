@@ -1,32 +1,13 @@
 import React from 'react';
 import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
+  TouchableOpacity,
   View,
   Text,
-  StatusBar,
-  Button,
   Image,
-  Alert
 } from 'react-native';
 import styles from './styles';
-import axios from 'axios';
-
-class LogoTitle extends React.Component {
-  render() {
-
-    return (
-    <View style={styles.line}>
-      <Image
-        source={require('../assets/imgs/scramblerLogo.png')}
-        style={{ width: 136, height: 30 }}
-      />
-      {/* <Text style={styles.allText}>  LOGIN</Text> */}
-      </View>
-    );
-  }
-}
+//import axios from 'axios';
+import LogoTitle from './LogoTitle';
 
 
 
@@ -45,18 +26,18 @@ componentWillUnmount(){
 }
 
     
-  myExample = () => {
-    //Alert.alert('btn ok')
-      //axios.get('https://acx.io:443//api/v2/tickers.json')
-      axios.get('http://localhost:3000/products') // localhost worked!!!
-      .then(function (response){
-        console.log(JSON.stringify(response));
-        Alert.alert(JSON.stringify(response))
-      }).catch(error => {
-        console.log(JSON.stringify(error))
-        Alert.alert(JSON.stringify(error))
-      })
-    }
+  // myExample = () => {
+  //   //Alert.alert('btn ok')
+  //     //axios.get('https://acx.io:443//api/v2/tickers.json')
+  //     axios.get('http://localhost:3000/products') // localhost worked!!!
+  //     .then(function (response){
+  //       console.log(JSON.stringify(response));
+  //       Alert.alert(JSON.stringify(response))
+  //     }).catch(error => {
+  //       console.log(JSON.stringify(error))
+  //       Alert.alert(JSON.stringify(error))
+  //     })
+  //   }
 
     //using navigation
   static navigationOptions = ({navigation, navigationOptions})=>{
@@ -77,20 +58,22 @@ componentWillUnmount(){
       textAlign: "center",
       //flex: 1,
     },
-    headerTitle: () => <LogoTitle/>
+    
+    headerTitle: () => <View style={styles.line}><LogoTitle/><Text style={styles.allText}>  HOME</Text></View>
   };}
 
     render() {
       const {navigate} = this.props.navigation;
       return (
         <View style={styles.container}>
-        <Image style={styles.logo} source={require('../assets/imgs/scramblerLogo.png')}></Image>
-        <Button
-          title="Go to Login"
-          // onPress={() => navigate('Login', {name: 'Jane'})}
-          //onPress={this.myExample}
-          onPress={() => navigate('Login')}
-        />
+        {/* <Image style={styles.logo} source={require('../assets/imgs/scramblerLogo.png')}></Image> */}
+        
+        
+        <TouchableOpacity style={styles.button} onPress={() => navigate('Login')}>
+            <Text style={styles.buttonText}>Go to Login</Text>
+          </TouchableOpacity>
+
+        
         </View>
       );
     }
