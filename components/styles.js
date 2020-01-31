@@ -46,6 +46,8 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     padding: 10,
     margin: 5,
+    width: 300,
+    minWidth: '100%'
   },
   inputContainer: {
     flexDirection: 'row',
@@ -91,10 +93,11 @@ roundedButton:{
 },
 container: {
   flex: 1.2,
-  //justifyContent: "flex-start",
+  justifyContent: "flex-start",
   alignItems: "center",
   backgroundColor: "#FFF212",
   padding: 10,
+  
 },
 logoContainer: {
   alignItems: "center",

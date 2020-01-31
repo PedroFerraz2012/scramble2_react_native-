@@ -63,6 +63,11 @@ export default class ScramblerScreen extends Component {
     };
   }
 
+  state= {
+// userId: this.props.navigation.res.data.id,
+userId: this.props.navigation.state.params.res.data.id
+//token: this.props.navigation.res.data.token
+  }
   savePicture = async () => {
 
 
@@ -254,8 +259,8 @@ export default class ScramblerScreen extends Component {
               <Image style={styles.imageBtn} source={require('../assets/imgs/addPicture.png')} ></Image>
             </TouchableOpacity>
           </View>
-
-
+<Text>{ navigation.getParam(userId) }</Text>
+<Text>{ navigation.getParam(token) }</Text>
 
           <View style={styles.inputContainer}>
 

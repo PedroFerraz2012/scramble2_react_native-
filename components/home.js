@@ -25,6 +25,19 @@ import axios from 'axios';
 
 
 class HomeScreen extends React.Component {
+
+  componentDidMount(){
+    // Start counting when the page is loaded
+    this.timeoutHandle = setTimeout(()=>{
+         // Add your logic for the transition
+         this.props.navigation.navigate('Login')
+    }, 1000);
+}
+
+componentWillUnmount(){
+    clearTimeout(this.timeoutHandle); // This is just necessary in the case that the screen is closed before the timeout fires, otherwise it would cause a memory leak that would trigger the transition regardless, breaking the user experience.
+}
+
     
   myExample = () => {
     //Alert.alert('btn ok')
@@ -43,20 +56,21 @@ class HomeScreen extends React.Component {
       headerStyle: {
         backgroundColor: "#FFF212",
         elevation: null,
-        //title: ,
+        
       },
+      title: 'Welcome to'
     };
     render() {
       const {navigate} = this.props.navigation;
       return (
         <View style={styles.container}>
         <Image style={styles.logo} source={require('../assets/imgs/scramblerLogo.png')}></Image>
-        <Button
-          title="Go to Jane's profile"
-          onPress={() => navigate('Login', {name: 'Jane'})}
+        {/* <Button
+          title="Go to Login"
+          // onPress={() => navigate('Login', {name: 'Jane'})}
           //onPress={this.myExample}
-          
-        />
+          onPress={() => navigate('Login')}
+        /> */}
         </View>
       );
     }
