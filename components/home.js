@@ -31,7 +31,7 @@ class HomeScreen extends React.Component {
     this.timeoutHandle = setTimeout(()=>{
          // Add your logic for the transition
          this.props.navigation.navigate('Login')
-    }, 1000);
+    }, 500);
 }
 
 componentWillUnmount(){
