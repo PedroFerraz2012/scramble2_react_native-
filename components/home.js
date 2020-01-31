@@ -13,14 +13,20 @@ import {
 import styles from './styles';
 import axios from 'axios';
 
-// import {
-//   Header,
-//   LearnMoreLinks,
-//   Colors,
-//   DebugInstructions,
-//   ReloadInstructions,
-// } from 'react-native/Libraries/NewAppScreen';
+class LogoTitle extends React.Component {
+  render() {
 
+    return (
+    <View style={styles.line}>
+      <Image
+        source={require('../assets/imgs/scramblerLogo.png')}
+        style={{ width: 136, height: 30 }}
+      />
+      {/* <Text style={styles.allText}>  LOGIN</Text> */}
+      </View>
+    );
+  }
+}
 
 
 
@@ -52,25 +58,39 @@ componentWillUnmount(){
       })
     }
 
-    static navigationOptions = {
-      headerStyle: {
-        backgroundColor: "#FFF212",
-        elevation: null,
-        
-      },
-      title: 'Welcome to'
-    };
+    //using navigation
+  static navigationOptions = ({navigation, navigationOptions})=>{
+    const {params} = navigation.state;
+
+    return{
+    headerStyle: {
+      backgroundColor: "#FFF212",
+      //elevation: null,
+    },
+    //headerTintColor: "#FFF212",
+    //title: params ? params.otherParam : 'Login',
+    //backgroundColor: "#FFF212",
+    headerTitleStyle: {
+      fontWeight: 'bold',
+      //fontFamily: "Haetten",
+      //fontWeight: "200",
+      textAlign: "center",
+      //flex: 1,
+    },
+    headerTitle: () => <LogoTitle/>
+  };}
+
     render() {
       const {navigate} = this.props.navigation;
       return (
         <View style={styles.container}>
         <Image style={styles.logo} source={require('../assets/imgs/scramblerLogo.png')}></Image>
-        {/* <Button
+        <Button
           title="Go to Login"
           // onPress={() => navigate('Login', {name: 'Jane'})}
           //onPress={this.myExample}
           onPress={() => navigate('Login')}
-        /> */}
+        />
         </View>
       );
     }
