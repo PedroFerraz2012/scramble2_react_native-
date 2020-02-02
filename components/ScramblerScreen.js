@@ -23,6 +23,24 @@ const options = {
 
 export default class ScramblerScreen extends Component {
 
+  //using navigation
+  static navigationOptions = ({ navigation, navigationOptions }) => {
+    const { params } = navigation.state;
+
+    return {
+      headerStyle: {
+        backgroundColor: "#FFF212"
+      },
+
+      headerTitleStyle: {
+        fontWeight: 'bold',
+        textAlign: "center",
+      },
+      title: 'LOGIN',
+      headerTitle: () => <LogoTitle />
+    };
+  }
+
 
   constructor() {
     super();
@@ -31,7 +49,7 @@ export default class ScramblerScreen extends Component {
       name: null,
       hint: null,
       pswd: null,
-      userId: ""
+      //userId: user 
     };
   }
 
@@ -82,29 +100,28 @@ export default class ScramblerScreen extends Component {
 
 
 
-  //using navigation
-  static navigationOptions = ({navigation, navigationOptions})=>{
-    const {params} = navigation.state;
-
-    return{
-    headerStyle: {
-      backgroundColor: "#FFF212"
-    },
-    
-    headerTitleStyle: {
-      fontWeight: 'bold',
-      textAlign: "center",
-    },
-    title: 'LOGIN',
-    headerTitle: () => <LogoTitle/>
-  };}
+  
 
   render() {
-    const { navigate } = this.props.navigation;
+
+    {/*Using the navigation prop we can get the 
+              value passed from the previous screen*/}  
+              const { navigation } = this.props;   //ok
+              //const user_name = navigation.getParam('userName', 'NO-User');  
+    const { navigate } = this.props.navigation; // ok
+    const userId = navigation.getParam('userId', 'NO-User'); // ok
+    const token = navigation.getParam('token', 'NO-token'); // ok
+    const isAuthenticated = navigation.getParam('isAuthenticated', 'false'); // ok
+
+    
     return (
       <View style={styles.container}>
 
-    
+        <View> 
+    <Text style={styles.textStyle}>User ID: {JSON.stringify(userId)}</Text>
+    <Text style={styles.textStyle}>Token: {JSON.stringify(token)}</Text>
+    <Text style={styles.textStyle}>isAuthenticated: {JSON.stringify(isAuthenticated)}</Text>
+        </View>
 
         <View style={styles.line}>
           <Text style={styles.allText}>Pick a picture</Text>
@@ -117,12 +134,11 @@ export default class ScramblerScreen extends Component {
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.roundedButton} onPress={() => navigate('List')}>
-        <Image style={styles.imageBtn} source={require('../assets/imgs/seeBtn.png')}></Image>
-        </TouchableOpacity>
+            <Image style={styles.imageBtn} source={require('../assets/imgs/seeBtn.png')}></Image>
+          </TouchableOpacity>
 
         </View>
-        {/* <Text>{ navigation.getParam(userId) }</Text>
-<Text>{ navigation.getParam(token) }</Text> */}
+
 
         <View style={styles.inputContainer}>
 

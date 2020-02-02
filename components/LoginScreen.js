@@ -5,8 +5,6 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  Image,
-  CheckBox,
   Alert,
 } from 'react-native';
 import styles from './styles';
@@ -25,9 +23,10 @@ export default class LoginScreen extends Component {
 
     super(props);
     this.state = {
+      isLoading: false,
       user: '',
       isAuthenticated: false,
-      baseAPI: 'https://e45b3d64.ngrok.io'
+      baseAPI: 'https://d5329571.ngrok.io'
     }
   }
   
@@ -64,6 +63,7 @@ export default class LoginScreen extends Component {
         }
       }
     ).then((res) => {
+      
       console.log('Response: ' + JSON.stringify(res))
 
       if (res.data.token) {
@@ -75,16 +75,23 @@ export default class LoginScreen extends Component {
         };
         console.log(DB)
         console.log('DB: ' + JSON.stringify(DB));
-        this.saveState(DB)
+
+        this.props.navigation.navigate('Scrambler', {
+          userId: res.data.id,
+          token: res.data.token,
+          isAuthenticated: true})
+
+        //this.saveState(DB)
       }
     }).catch((error) => {
-         Alert.alert(JSON.stringify(error));
-         console.log(JSON.stringify(error));
+      Alert.alert(JSON.stringify(error.message));
+        console.log(JSON.stringify(error));
+         
        });}
 
 
   saveState = (DB) => {
-    this.setState(this.user = DB)
+    //this.setState(this.user = DB)
     console.log('DB AGAIN: ' + JSON.stringify(DB));
     this.props.navigation.navigate('Scrambler', DB)
   }
@@ -137,7 +144,17 @@ export default class LoginScreen extends Component {
           onPress={() => this.props.navigation.navigate("ForgetPassword")}
           title="Forget Password">
           Forget Password</Text>
+
+          {
+            this.isLoading &&
+            <View>
+            <Text> is loading</Text>
+            </View>
+          }
+
           </View>
+
+          
 
     );
   }
