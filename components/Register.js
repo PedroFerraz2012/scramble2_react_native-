@@ -8,12 +8,13 @@ import {
   TouchableHighlight,
   Image,
   KeyboardAvoidingView,
-  AsyncStorage
+  AsyncStorage,
+  Alert
 } from "react-native";
 import styles from './styles.js';
 import LogoTitle from './LogoTitle';
 import { StackNavigator } from "react-navigation";
-
+import axios from 'axios';
 
 
 export default class Register extends Component {
@@ -23,9 +24,12 @@ export default class Register extends Component {
       email: "",
       name: "",
       password: "",
-      password_confirmation: ""
+      password_confirmation: "",
+      baseAPI: 'https://aa14c53d.ngrok.io'
     };
   }
+
+  
 
   //using navigation
   static navigationOptions = ({navigation, navigationOptions})=>{
@@ -44,15 +48,48 @@ export default class Register extends Component {
     headerTitle: () => <View style={styles.line}><LogoTitle/><Text style={styles.allText}>  REGISTER</Text></View>
   };}
 
+  Register = () => {
+    Alert.alert('btn register ok')
+    axios.post(
+      this.state.baseAPI+'/user/signup',
+      {
+        name: this.state.name,
+        email: this.state.email,
+        password: this.state.password
+      },
+      {
+        Headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
+      }
+    ).then((res) => {
+      
+      console.log('Response: ' + JSON.stringify(res))
+      
+      if (res.data.message == 'User created') {
+        console.log("registered new, just log in");
+        console.log(res.data)
+        
+
+        this.props.navigation.navigate('Login')
+      }
+    }).catch((error) => {
+      console.log(JSON.stringify(error));
+      if(error.message == "Request failed with status code 409")
+      {Alert.alert("this email is already registered");}
+      else{Alert.alert(JSON.stringify(error.message));}
+       });}
+
+
+       
+
   async onRegisterPress() {
-    const { email, password, name } = this.state;
-    console.log(email);
-    console.log(name);
-    console.log(password);
-    await AsyncStorage.setItem("email", email);
-    await AsyncStorage.setItem("name", name);
-    await AsyncStorage.setItem("password", password);
-    this.props.navigation.navigate("Login");
+
+    if(this.state.password_confirmation === this.state.password){
+      this.Register()
+    }else { Alert.alert('check your password, confirmation has to match')}
+
   }
 
   render() {
@@ -82,6 +119,7 @@ export default class Register extends Component {
           <TextInput
             value={this.state.password}
             onChangeText={password => this.setState({ password })}
+            autoCapitalize="none"
             style={styles.input}
             placeholder="Password"
             secureTextEntry={true}
@@ -91,8 +129,9 @@ export default class Register extends Component {
             secureTextEntry
           />
           <TextInput
-            value={this.state.password}
+            value={this.state.password_confirmation}
             onChangeText={password_confirmation => this.setState({ password_confirmation })}
+            autoCapitalize="none"
             style={styles.input}
             placeholder="Confirm Password"
             secureTextEntry={true}

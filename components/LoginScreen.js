@@ -25,8 +25,9 @@ export default class LoginScreen extends Component {
     this.state = {
       isLoading: false,
       user: '',
+      isLoading: false,
       isAuthenticated: false,
-      baseAPI: 'https://d5329571.ngrok.io'
+      baseAPI: 'https://88aa7e3d.ngrok.io'
     }
   }
   
@@ -49,7 +50,7 @@ export default class LoginScreen extends Component {
   };}
 
   Login = () => {
-
+    
     axios.post(
       this.state.baseAPI+'/user/login',
       {
@@ -68,6 +69,7 @@ export default class LoginScreen extends Component {
 
       if (res.data.token) {
         console.log("logedIn");
+        console.log(res.data)
         const DB = {
           userId: res.data.id,
           token: res.data.token,
@@ -79,7 +81,9 @@ export default class LoginScreen extends Component {
         this.props.navigation.navigate('Scrambler', {
           userId: res.data.id,
           token: res.data.token,
-          isAuthenticated: true})
+          isAuthenticated: true,
+          baseAPI: this.state.baseAPI
+        })
 
         //this.saveState(DB)
       }
@@ -108,6 +112,9 @@ export default class LoginScreen extends Component {
       
       <View  style={styles.container}>
 
+{this.state.isLoading &&
+<Text>L O A D I N G</Text>
+}
           
 
           
@@ -144,13 +151,6 @@ export default class LoginScreen extends Component {
           onPress={() => this.props.navigation.navigate("ForgetPassword")}
           title="Forget Password">
           Forget Password</Text>
-
-          {
-            this.isLoading &&
-            <View>
-            <Text> is loading</Text>
-            </View>
-          }
 
           </View>
 
