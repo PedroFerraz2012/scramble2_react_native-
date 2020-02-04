@@ -8,26 +8,22 @@ import {
   Alert,
 } from 'react-native';
 import styles from './styles';
-import axios from 'axios';
 import LogoTitle from './LogoTitle';
+import apis from './api';
 
 export default class LoginScreen extends Component {
 
-
-  state = { email: '', password: '', pageTitle: 'LOGIN'}
+  state = { email: '', password: '', pageTitle: 'LOGIN', isLoading: false}
   onChangeText = (key, val) => {
     this.setState({ [key]: val })
   }
 
   constructor(props) {
-
     super(props);
     this.state = {
-      isLoading: false,
       user: '',
       isLoading: false,
       isAuthenticated: false,
-      baseAPI: 'https://88aa7e3d.ngrok.io'
     }
   }
   
@@ -50,20 +46,33 @@ export default class LoginScreen extends Component {
   };}
 
   Login = () => {
-    
-    axios.post(
-      this.state.baseAPI+'/user/login',
-      {
-        email: this.state.email,
-        password: this.state.password
-      },
-      {
-        Headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        }
-      }
-    ).then((res) => {
+    this.onChangeText('isLoading', true)
+    // this.setState(isLoading= true)
+    // axios.post(
+    //   // this.state.baseAPI+'/user/login',
+    //   api+'/user/login',
+    const user =  {
+      email: this.state.email,
+      password: this.state.password,
+      Headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+    }};
+    //console.log(user);
+    apis.login(user)
+    //   api+'/user/login'.post(
+    //   {
+    //     email: this.state.email,
+    //     password: this.state.password
+    //   },
+    //   {
+    //     Headers: {
+    //       'Accept': 'application/json',
+    //       'Content-Type': 'application/json'
+    //     }
+    //   }
+    // )
+    .then((res) => {
       
       console.log('Response: ' + JSON.stringify(res))
 
@@ -78,11 +87,11 @@ export default class LoginScreen extends Component {
         console.log(DB)
         console.log('DB: ' + JSON.stringify(DB));
 
+        this.onChangeText('isLoading', false)
         this.props.navigation.navigate('Scrambler', {
           userId: res.data.id,
           token: res.data.token,
           isAuthenticated: true,
-          baseAPI: this.state.baseAPI
         })
 
         //this.saveState(DB)
@@ -94,15 +103,15 @@ export default class LoginScreen extends Component {
        });}
 
 
-  saveState = (DB) => {
-    //this.setState(this.user = DB)
-    console.log('DB AGAIN: ' + JSON.stringify(DB));
-    this.props.navigation.navigate('Scrambler', DB)
-  }
+  // saveState = (DB) => {
+  //   //this.setState(this.user = DB)
+  //   console.log('DB AGAIN: ' + JSON.stringify(DB));
+  //   this.props.navigation.navigate('Scrambler', DB)
+  // }
 
-  notAuth = () => {
-    Alert.alert('Something went wrong')
-  }
+  // notAuth = () => {
+  //   Alert.alert('Something went wrong')
+  // }
 
   render() {
     const {navigate} = this.props.navigation;
@@ -113,11 +122,8 @@ export default class LoginScreen extends Component {
       <View  style={styles.container}>
 
 {this.state.isLoading &&
-<Text>L O A D I N G</Text>
-}
-          
-
-          
+<Text style={styles.message}>L O A D I N G</Text>
+}      
         <TextInput
           style={styles.input}
           placeholder="Type your email"
@@ -153,8 +159,6 @@ export default class LoginScreen extends Component {
           Forget Password</Text>
 
           </View>
-
-          
 
     );
   }

@@ -121,7 +121,12 @@ whiteBox: {
   borderWidth: 0,
   padding: 0,
 },
-
+message:{
+  color: 'red',
+  fontWeight: 'bold',
+  padding:8,
+  fontSize:25,
+  },
 
 })
 

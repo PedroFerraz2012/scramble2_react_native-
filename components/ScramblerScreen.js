@@ -12,6 +12,7 @@ import styles from './styles.js';
 import LogoTitle from './LogoTitle';
 import ImagePicker from 'react-native-image-picker';
 import axios from 'axios';
+import api from './api';
 
 const options = {
   title: 'Select Avatar',
@@ -54,8 +55,6 @@ export default class ScramblerScreen extends Component {
       userId: null,
       token: null,
       isAuthenticated: null,
-      baseAPI: null,
-
     };
   }
 
@@ -197,29 +196,28 @@ export default class ScramblerScreen extends Component {
 
   savePicture = async (userId, token, baseAPI) => {
 
-    console.log(baseAPI)
     if (userId) {
-      const formData = new FormData();
+      var data = new FormData();
       
-      formData.append("userPicture", {  uri: this.state.avatarSource+'/'+this.state.photo.fileName,
-                                        name: this.state.photo.fileName,
-                                        type: this.state.photo.type
+      data.append("userPicture", {  uri: this.state.avatarSource+'/'+this.state.photo.fileName,
+                                    name: this.state.photo.fileName,
+                                    type: this.state.photo.type
       });
 
-      formData.append( "name", this.state.name); // ok
-      formData.append( "hint", this.state.hint); // ok
-      formData.append( "pswd", this.state.pswd); // ok
-      formData.append( "user", userId); // ok
+      data.append( {"name": this.state.name}); // ok
+      data.append( {"hint": this.state.hint}); // ok
+      data.append( {"pswd": this.state.pswd}); // ok
+      data.append( {"user": userId}); // ok
     
 
-
+      console.log('\n' + '\n' + '\n' + '\n' + '\n' + '\n' + '\n' + '\n' + '\n')
       //console.log("FORM-DATA " + formData);
-      console.log("FORM-DATA STRINGIFY " + JSON.stringify(formData));
+      console.log("FORM-DATA STRINGIFY " + JSON.stringify(data));
       //FORM-DATA [object Object]
       //{"_parts": [["", [Object]]]}
       //FORM-DATA STRINGIFY {"_parts":[["userPicture",{"uri":"content://media/external/images/media/2779/IMG-20200203-WA0001.jpg","name":"IMG-20200203-WA0001.jpg","type":"image/jpeg"}],["name","Gv"],["hint"," X"],["pswd","Xx"],["user","5e2a9d50276334105e4f8637"]]}
       axios.post(
-        baseAPI + '/pictures',
+        api+'/pictures',
         {
           headers: {
             Accept: "application/json",
@@ -227,7 +225,7 @@ export default class ScramblerScreen extends Component {
             'authorization': 'Bearer ' + token
           },
           method: "POST",
-          body: formData._parts[0][0],
+          body: data,
         }
 
       ).then((res) => {
