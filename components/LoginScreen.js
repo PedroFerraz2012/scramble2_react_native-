@@ -107,7 +107,7 @@ export default class LoginScreen extends Component {
 
        storeData = async (token) => {
         try {
-          await AsyncStorage.setItem('@token', token)
+          await AsyncStorage.setItem('token', token+' ')
         } catch (e) {
           console.log(e)
         }

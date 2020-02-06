@@ -18,7 +18,7 @@ class Refresh extends React.Component {
     this.timeoutHandle = setTimeout(()=>{
          // Add your logic for the transition
          this.props.navigation.navigate('List')
-    }, 10);
+    }, 1000);
 }
 
 componentWillUnmount(){
@@ -48,7 +48,7 @@ componentWillUnmount(){
       //flex: 1,
     },
     
-    headerTitle: () => <View style={styles.line}><LogoTitle/><Text style={styles.allText}>  HOME</Text></View>
+    headerTitle: () => <View style={styles.line}><LogoTitle/><Text style={styles.allText}>  Refreshing</Text></View>
   };}
 
     render() {

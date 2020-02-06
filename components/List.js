@@ -159,13 +159,16 @@ export default class List extends Component {
     this.getUsers()
   }
 
+  
   getData = async () => {
     try {
-      const value = await AsyncStorage.getItem('@stoken')
+      const value = await AsyncStorage.getItem('token')
       if(value !== null) {
+        console.log('retrieve token: '+value)
         return value
       }
     } catch(e) {
+      console.log(e)
       return ''
     }
   }
@@ -182,7 +185,7 @@ if(this.state.toDelete)
     Headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
-      'authorization': 'Bearer ' +token
+      'authorization': 'Bearer '+token
     }
   }
 

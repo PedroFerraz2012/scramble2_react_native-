@@ -6,7 +6,8 @@ import {
   TextInput,
   TouchableOpacity,
   AppRegistry,
-  Alert
+  Alert,
+  ToastAndroid
 } from 'react-native';
 import styles from './styles.js';
 import LogoTitle from './LogoTitle';
@@ -15,6 +16,7 @@ import axios from 'axios';
 import apis from './api';
 
 import RNFetchBlob from 'rn-fetch-blob'
+import { NavigationEvents } from 'react-navigation';
 
 const options = {
   title: 'Select Avatar',
@@ -114,128 +116,135 @@ export default class ScramblerScreen extends Component {
     });
   }
 
-  
-
-  savePicture = async (userId, token, baseAPI) => {
-
-    if (userId) {
-
-      this.onChangeText('isLoading', true)
 
 
-      console.log('\n' + '\n' + '\n' + '\n' + '\n' + '\n' + '\n' + '\n' + '\nSTARTING UPLOADING')
-      
-      var image = this.state.photo
-      image.src = URL.createObjectURL(this.state.photo[0]);
-      const newPicture = new FormData();
+  // savePicture = async (userId, token, baseAPI) => {
 
-      newPicture.append('userPicture',
-        image.src, this.state.photo.fileName)
+  //   if (userId) {
 
-      const options = {
-        name: this.state.name,
-        hint: this.state.hint,
-        pswd: this.state.pswd,
-        user: userId,
-
-      };
-
-      axios.post(
-        apis.apiURL + '/pictures',
-
-        {
-          name: this.state.name,
-          hint: this.state.hint,
-          pswd: this.state.pswd,
-          user: userId,
-        },
-        //newPicture,
+  //     this.onChangeText('isLoading', true)
 
 
+  //     console.log('\n' + '\n' + '\n' + '\n' + '\n' + '\n' + '\n' + '\n' + '\nSTARTING UPLOADING')
+
+  //     var image = this.state.photo
+  //     image.src = URL.createObjectURL(this.state.photo[0]);
+  //     const newPicture = new FormData();
+
+  //     newPicture.append('userPicture',
+  //       image.src, this.state.photo.fileName)
+
+  //     const options = {
+  //       name: this.state.name,
+  //       hint: this.state.hint,
+  //       pswd: this.state.pswd,
+  //       user: userId,
+
+  //     };
+
+  //     axios.post(
+  //       apis.apiURL + '/pictures',
+
+  //       {
+  //         name: this.state.name,
+  //         hint: this.state.hint,
+  //         pswd: this.state.pswd,
+  //         user: userId,
+  //       },
+  //       //newPicture,
 
 
-        {// headers are ok
-          headers: {
-            'Accept': 'application/json',
-            //'Accept': '*/*',
-            'Content-Type': 'multipart/form-data',
-
-            //'Content-Type': 'application/json',
-            'authorization': 'Bearer ' + token
-          }
-        }
-      )
-        .then((res) => {
-
-          console.log('\n' + '\n' + '\n' + '\n' + '\n' + '\n')
-          console.log(+ JSON.stringify(res));
-          this.onChangeText('isLoading', false)
-          if (res.data.message == "Created Picture successfully") {
-            Alert.alert("picture sent");
-
-          }
-
-        }).catch((error) => {
-
-          Alert.alert(JSON.stringify(error.message));
-          console.log('\n' + '\n' + '\n' + '\n' + '\n' + '\n\n' + '\n' + '\n' + '\n' + '\n' + '\n')
-          console.log(JSON.stringify(error));
 
 
-        });
-    } else {
-      return Alert.alert('not authenticated')
-    }
+  //       {// headers are ok
+  //         headers: {
+  //           'Accept': 'application/json',
+  //           //'Accept': '*/*',
+  //           'Content-Type': 'multipart/form-data',
 
-  }
+  //           //'Content-Type': 'application/json',
+  //           'authorization': 'Bearer ' + token
+  //         }
+  //       }
+  //     )
+  //       .then((res) => {
+
+  //         console.log('\n' + '\n' + '\n' + '\n' + '\n' + '\n')
+  //         console.log(+ JSON.stringify(res));
+  //         this.onChangeText('isLoading', false)
+  //         if (res.data.message == "Created Picture successfully") {
+  //           Alert.alert("picture sent");
+
+  //         }
+
+  //       }).catch((error) => {
+
+  //         Alert.alert(JSON.stringify(error.message));
+  //         console.log('\n' + '\n' + '\n' + '\n' + '\n' + '\n\n' + '\n' + '\n' + '\n' + '\n' + '\n')
+  //         console.log(JSON.stringify(error));
+
+
+  //       });
+  //   } else {
+  //     return Alert.alert('not authenticated')
+  //   }
+
+  // }
 
   savePicRNfetch = (userId, token) => {
     if (userId) {
       this.onChangeText('isLoading', true)
 
-    RNFetchBlob.fetch('POST', apis.apiURL + '/pictures', {
-      Authorization: 'Bearer ' + token,
-      otherHeader: "foo",
-      'Content-Type': 'multipart/form-data',
-    }, [
-      // element with property `filename` will be transformed into `file` in form data
-      //{ name: 'userPicture', filename: this.state.photo.fileName, type: this.state.photo.type, data: binaryDataInBase64 },
-      // part file from storage
-      //{ name : 'avatar-foo', filename : 'avatar-foo.png', type:'image/foo', data: RNFetchBlob.wrap(path_to_a_file)},
-      { name: 'userPicture', filename: this.state.photo.fileName, type: this.state.photo.type, data: RNFetchBlob.wrap(this.state.photo.uri) },
-      // elements without property `filename` will be sent as plain text
-      // model: { name : 'name', data : 'user'},
-      {
-        name : 'name', data : this.state.name,
-        name : 'hint' , data : this.state.hint,
-        name : 'pswd' , data : this.state.pswd,
-        name : 'user' , data : userId
-      },
-      {
-        name: 'info', data: JSON.stringify({
-          mail: 'example@example.com',
-          tel: '12345678'
-        })
-      },
-    ]).then((resp) => {
-      this.onChangeText('isLoading', false)
-      console.log('\n' + '\n' + '\n' + '\n' + '\n' + '\n')
-      console.log(resp.data);
-      this.onChangeText('isLoading', false)
-      
-      if (resp.data) {
-        Alert.alert("picture sent");
-      }
+      console.log("name: " + this.state.name + ' hint: ' + this.state.hint + ' pswd: ' + this.state.pswd)
 
-    }).catch((err) => {
-      Alert.alert(JSON.stringify(err.message));
-      console.log('\n' + '\n' + '\n' + '\n' + '\n' + '\n\n' + '\n' + '\n' + '\n' + '\n' + '\n')
-      console.log(JSON.stringify(err));
-    });
-  } else {
-    return Alert.alert('not authenticated')
+      const nameConst = this.state.name
+      const hintConst = this.state.hint
+      const pswdConst = this.state.pswd
+      RNFetchBlob.fetch('POST', apis.apiURL + '/pictures', {
+        Authorization: 'Bearer ' + token,
+        //otherHeader: "foo",
+        'Content-Type': 'multipart/form-data',
+      }, [
+        // element with property `filename` will be transformed into `file` in form data
+        //{ name: 'userPicture', filename: this.state.photo.fileName, type: this.state.photo.type, data: binaryDataInBase64 },
+        // part file from storage
+        //{ name : 'avatar-foo', filename : 'avatar-foo.png', type:'image/foo', data: RNFetchBlob.wrap(path_to_a_file)},
+        { name: 'userPicture', filename: this.state.photo.fileName, type: this.state.photo.type, data: RNFetchBlob.wrap(this.state.photo.uri) },
+        // elements without property `filename` will be sent as plain text
+        // model: { name : 'name', data : 'user'},
+        {
+          name: 'user', data: userId
+        },
+        { name: 'hint', data: hintConst },
+
+        { name: 'name', data: nameConst },
+        { name: 'pswd', data: pswdConst }
+
+        // , {
+        //   name: 'info', data: JSON.stringify({
+        //     mail: 'example@example.com',
+        //     tel: '12345678'
+        //   })
+        // },
+      ]).then((resp) => {
+        this.onChangeText('isLoading', false)
+        console.log('\n' + '\n' + '\n' + '\n' + '\n' + '\n')
+        console.log(resp.data);
+        this.onChangeText('isLoading', false)
+        //{this.props.navigation.navigate('List')}
+        if (resp.data.message === 'Created Picture successfully') {
+          Alert.alert("picture sent");
+        }
+
+      }).catch((err) => {
+        Alert.alert(JSON.stringify(err.message));
+        console.log('\n' + '\n' + '\n' + '\n' + '\n' + '\n\n' + '\n' + '\n' + '\n' + '\n' + '\n')
+        console.log(JSON.stringify(err));
+      });
+    } else {
+      Alert.alert('not authenticated')
+    }
   }
-}
 
 
   render() {
@@ -244,16 +253,18 @@ export default class ScramblerScreen extends Component {
     const { navigation } = this.props;   //ok
     const { navigate } = this.props.navigation;               // ok
 
-    // passed values
+    // passed values from navifation
     const userId = navigation.getParam('userId', '');  // ok
     const token = navigation.getParam('token', 'NO-token');   // ok
-    const isAuthenticated = navigation.getParam('isAuthenticated', 'false'); // ok
-    const baseAPI = navigation.getParam('baseAPI', 'NO-baseAPI'); // ok
+    //const isAuthenticated = navigation.getParam('isAuthenticated', 'false'); // ok
+    //const baseAPI = navigation.getParam('baseAPI', 'NO-baseAPI'); // ok
 
 
     return (
       <View style={styles.container}>
-
+        <NavigationEvents
+          onDidFocus={() => ToastAndroid.show('Refreshed', ToastAndroid.LONG)}
+        />
         {this.state.isLoading &&
           <Text style={styles.message}>L O A D I N G</Text>
         }
@@ -276,7 +287,7 @@ export default class ScramblerScreen extends Component {
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.roundedButton}
-          onPress={() => navigate('List', {token: token})}>
+            onPress={() => navigate('List', { token: token })}>
             <Image style={styles.imageBtn} source={require('../assets/imgs/seeBtn.png')}></Image>
           </TouchableOpacity>
 
