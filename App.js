@@ -25,6 +25,7 @@ import ScramblerScreen from './components/ScramblerScreen';
 import Register from './components/Register';
 import ForgetPassword from './components/ForgetPassword';
 import List from './components/List';
+import Refresh from './components/refresh';
 
 const MainNavigator = createStackNavigator({
   Home: {screen: HomeScreen},
@@ -32,7 +33,8 @@ const MainNavigator = createStackNavigator({
   Scrambler: {screen: ScramblerScreen},
   Register: {screen: Register},
   ForgetPassword: {screen: ForgetPassword},
-  List: {screen: List}
+  List: {screen: List},
+  Refresh: {screen: Refresh}
 });
 
 const App = createAppContainer(MainNavigator);

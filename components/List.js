@@ -10,6 +10,7 @@ import {
   Alert,
   Picker,
   ScrollView,
+  ToastAndroid
 } from 'react-native';
 import { NavigationEvents } from 'react-navigation';
 import styles from './styles';
@@ -193,7 +194,7 @@ if(this.state.toDelete)
       //console.log("Picture deleted");
       console.log(res.data);
       Alert.alert('picture deleted');
-      {this.props.navigation.navigate('List')}
+      {this.props.navigation.navigate('Refresh')}
     }
   }).catch((error) => {
     console.log(JSON.stringify(error));
@@ -219,7 +220,7 @@ if(this.state.toDelete)
 
       <View style={styles.container}>
         <NavigationEvents
-                onDidFocus={() => Alert.alert('Refreshed')}
+                onDidFocus={() => ToastAndroid.show('Refreshed', ToastAndroid.LONG)}
                 />
 
 
