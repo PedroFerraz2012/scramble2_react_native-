@@ -114,94 +114,7 @@ export default class ScramblerScreen extends Component {
     });
   }
 
-  // savePicture = (userId,token,baseAPI) => {
-
-  //   if (!userId) {
-  //     return Alert.alert('not authenticated')
-  //   } else {
-  //     axios.post(
-  //       baseAPI + '/pictures',
-  //       {
-  //         user: userId,
-  //         name: this.state.name,
-  //         hint: this.state.hint,
-  //         pswd: this.state.pswd,
-  //         userPicture: this.state.photo,
-  //       },
-  //       {
-  //         headers: {
-  //           //'Accept': 'application/json',
-  //           'Content-Type': 'multipart/form-data',
-  //           'authorization': 'Bearer '+token
-  //         }
-  //       }
-  //     ).then((res) => {
-
-  //       console.log('Response: ' + JSON.stringify(res))
-
-  //       // if (res.data.token) {
-  //       //   console.log("picure sent");
-  //       //   console.log(res.data)
-  //       // const DB = {
-  //       //   userId: res.data.id,
-  //       //   token: res.data.token,
-  //       //   isAuthenticated: true
-  //       // };
-  //       // console.log(DB)
-  //       // console.log('DB: ' + JSON.stringify(DB));
-
-  //       // this.props.navigation.navigate('Scrambler', {
-  //       //   userId: res.data.id,
-  //       //   token: res.data.token,
-  //       //   isAuthenticated: true,
-  //       //   baseAPI: this.state.baseAPI
-  //       // })
-
-  //       //this.saveState(DB)
-  //       //}
-  //     }).catch((error) => {
-  //       Alert.alert(JSON.stringify(error.message));
-  //       console.log(JSON.stringify(error));
-
-  //     });
-
-  //   }
-  // }
-
-
-  // savePicture = async (userId,token,baseAPI) => {
-
-  //   if (userId)  {
-  //     axios.post(
-  //       baseAPI + '/pictures',
-  //       {
-  //         user: userId,
-  //         name: this.state.name,
-  //         hint: this.state.hint,
-  //         pswd: this.state.pswd,
-  //         userPicture: this.state.photo,
-  //       },
-  //       {
-  //         headers: {
-  //           'Accept': 'multipart/form-data',
-  //           'Content-Type': 'multipart/form-data',
-  //           'authorization': 'Bearer '+token
-  //         }
-  //       }
-  //     ).then((res) => {
-  //       console.log('Response: ' + JSON.stringify(res))
-  //       if (res.data.message == "Created Picture successfully") {
-  //         Alert.alert("picure sent");}
-
-  //     }).catch((error) => {
-  //       Alert.alert(JSON.stringify(error.message));
-  //       console.log(JSON.stringify(error));
-
-  //     });
-  //   }else {
-  //     return Alert.alert('not authenticated')
-  //   }
-  // }
+  
 
   savePicture = async (userId, token, baseAPI) => {
 
@@ -211,66 +124,7 @@ export default class ScramblerScreen extends Component {
 
 
       console.log('\n' + '\n' + '\n' + '\n' + '\n' + '\n' + '\n' + '\n' + '\nSTARTING UPLOADING')
-      // var RNFS = require('react-native-fs');
-
-      // var uploadUrl = apis.apiURL + '/pictures';
-      // // create an array of objects of the files you want to upload
-      // var files = [
-      //   {
-      //     name: 'userPicture',
-      //     filename: this.state.photo.fileName,
-      //     filepath: this.state.photo.path,
-      //     filetype: this.state.photo.type
-      //   }
-      // ];
-
-      // var uploadBegin = (response) => {
-      //   var jobId = response.jobId;
-      //   console.log('UPLOAD HAS BEGUN! JobId: ' + jobId);
-      // };
-
-      // var uploadProgress = (response) => {
-      //   var percentage = Math.floor((response.totalBytesSent / response.totalBytesExpectedToSend) * 100);
-      //   console.log('UPLOAD IS ' + percentage + '% DONE!');
-      // };
-
-      // RNFS.uploadFiles({
-      //   toUrl: uploadUrl,
-      //   files: files,
-      //   method: 'POST',
-      //   headers: {
-      //     'Accept': 'application/json',
-      //     'Content-Type': 'multipart/form-data',
-      //     'authorization': 'Bearer ' + token
-      //   },
-      //   body: {
-      //     "name": this.state.name,
-      //     "hint": this.state.hint,
-      //     "pswd": this.state.pswd,
-      //     "user": userId,
-      //   },
-      //   begin: uploadBegin,
-      //   progress: uploadProgress
-      // }).promise.then((response) => {
-      //   if (response.statusCode == 201) {
-      //     console.log('FILES UPLOADED!'); // response.statusCode, response.headers, response.body
-      //     this.onChangeText('isLoading', false)
-      //   } else {
-      //     console.log('SERVER ERROR');
-      //     this.onChangeText('isLoading', false)
-      //   }
-      // })
-      //   .catch((err) => {
-      //     if (err.description === "cancelled") {
-      //       // cancelled by user
-      //       console.log('cancelled by user');
-      //       this.onChangeText('isLoading', false)
-      //     }
-      //     console.log(err);
-      //     this.onChangeText('isLoading', false)
-      //   });
-      //   this.onChangeText('isLoading', false)
-      // }
+      
       var image = this.state.photo
       image.src = URL.createObjectURL(this.state.photo[0]);
       const newPicture = new FormData();
@@ -278,58 +132,13 @@ export default class ScramblerScreen extends Component {
       newPicture.append('userPicture',
         image.src, this.state.photo.fileName)
 
-      // newPicture.append('body', {
-      //   name: this.state.name,
-      //   hint: this.state.hint,
-      //   pswd: this.state.pswd,
-      //   user: userId,
-      // })
-
-      //submitForm("multipart/form-data", formData, (msg) => console.log(msg));
-
-      // const data = {
-      //   name: this.state.name,
-      //   hint: this.state.hint,
-      //   pswd: this.state.pswd,
-      //   user: userId,
-      //   file: this.state.photo.path
-      // };
       const options = {
         name: this.state.name,
         hint: this.state.hint,
         pswd: this.state.pswd,
         user: userId,
 
-        // file: [(options, headers) => {
-        //   options.append(this.state.avatarSource)
-        //   return data;
-        // }]
       };
-
-      // var data2 = new FormData();
-
-      // data2.append({
-      //   name: this.state.name,
-      //   hint: this.state.hint,
-      //   pswd: this.state.pswd,
-      // })
-
-
-      // data2.append(options);
-      // data2.append("userPicture", fs.createReadStream(this.state.photo.path), { knownLength: fs.statSync(this.state.photo.path).size });
-      // data2.append({
-      //   userPicture: this.state.photo,
-      //   name: this.state.name,
-      //         hint: this.state.hint,
-      //         pswd: this.state.pswd,
-      //         user: userId,
-      // });
-
-      //console.log("DATA "+JSON.stringify(data2))
-      // console.log("DATA ._parts "+JSON.stringify(data2._parts))
-      // console.log("DATA ._parts[0] "+JSON.stringify(data2._parts[0].name))
-      //console.log("DATA ._parts[1] "+JSON.stringify(data2._parts[1]))
-
 
       axios.post(
         apis.apiURL + '/pictures',

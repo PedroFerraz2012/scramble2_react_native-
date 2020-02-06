@@ -14,7 +14,7 @@ import {
 import styles from './styles';
 import LogoTitle from './LogoTitle';
 import axios from 'axios';
-import api from './api';
+import apis from './api';
 
 const MyHooks = () => {
   // using useState to manage state array
@@ -125,9 +125,7 @@ export default class List extends Component {
     //const [users, setList] = useState([]); //hooks
 
     //Alert.alert("getUser accessed")
-    axios.get(
-      'https://aa14c53d.ngrok.io/user'
-    ).then((res) => {
+    apis.loadUser().then((res) => {
       console.log('Response.data.users: ' + JSON.stringify(res.data.users))
       res.data.users.map((usersList) => console.log(usersList._id))//testing data
      

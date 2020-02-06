@@ -15,7 +15,7 @@ import styles from './styles.js';
 import LogoTitle from './LogoTitle';
 import { StackNavigator } from "react-navigation";
 import axios from 'axios';
-
+import apis from './api';
 
 export default class Register extends Component {
   constructor(props) {
@@ -50,20 +50,22 @@ export default class Register extends Component {
 
   Register = () => {
     Alert.alert('btn register ok')
-    axios.post(
-      this.state.baseAPI+'/user/signup',
-      {
+
+    const signup = {
         name: this.state.name,
         email: this.state.email,
         password: this.state.password
-      },
-      {
-        Headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        }
+    }
+    const headers = {
+      Headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
       }
-    ).then((res) => {
+    }
+
+    apis.signUp(signup,headers)
+
+    .then((res) => {
       
       console.log('Response: ' + JSON.stringify(res))
       
