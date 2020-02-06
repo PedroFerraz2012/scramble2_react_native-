@@ -17,74 +17,60 @@ import LogoTitle from './LogoTitle';
 import axios from 'axios';
 import apis from './api';
 
-const MyHooks = () => {
-  // using useState to manage state array
-  const [enteredItem, setEnteredItem] = useState('');
-  const [newList, setList] = useState([]);
+// const MyHooks = () => {
+//   // using useState to manage state array
+//   const [enteredItem, setEnteredItem] = useState('');
+//   const [newList, setList] = useState([]);
 
 
-  const listInputHandler = (enteredText) => {
-    setEnteredItem(enteredText);
-  };
+//   const listInputHandler = (enteredText) => {
+//     setEnteredItem(enteredText);
+//   };
 
-  const addItemHandler = () => {
-    console.log(enteredItem);
-    //...newList gets the existing array, next add new element
+//   const addItemHandler = () => {
+//     console.log(enteredItem);
+//     //...newList gets the existing array, next add new element
 
-    setList([...newList, enteredItem]);
-    setEnteredItem('');
-  };
+//     setList([...newList, enteredItem]);
+//     setEnteredItem('');
+//   };
 
-  return (
-    <View style={styles.container}>
-      <View style={styles.line}>
-        <TextInput
-          placeholder='add item to list'
-          onChangeText={listInputHandler}
-          style={{ width: '80%', borderColor: 'black', borderWidth: 1, padding: 10 }}
-          value={enteredItem}
-        />
-        <Button
-          title='Add'
-          onPress={addItemHandler}
-        />
-
-      </View>
-
-      <View>
-        {/* mapping list */}
-        {newList.map((go) => <Text>{goal}</Text>)}
-      </View>
-    </View>
-  )
-}
-
-// const GetUsers = async () => {
-//   const [users, setList] = useState([]); //hooks
-
-//   //Alert.alert("getUser accessed")
-//   axios.get(
-//     'https://aa14c53d.ngrok.io/user'
-//   ).then((res) => {
-//     console.log('Response.data.users: ' + JSON.stringify(res.data.users))
-//     res.data.users.map((usersList) => console.log(usersList._id))//testing data
-//     res.data.users.map((usersList) => setList([...users, usersList._id]))//testing data
-//   }).catch((error) => {
-//     //Alert.alert(JSON.stringify(error.message));
-//     console.log(JSON.stringify(error));
-//   });
-// if(res){
 //   return (
-//     <View>
-//       <Text>Test</Text>
-//       {users.map((usersList) => <Text key={usersList}>{usersList}</Text>)}
+//     <View style={styles.container}>
+//       <View style={styles.line}>
+//         <TextInput
+//           placeholder='add item to list'
+//           onChangeText={listInputHandler}
+//           style={{ width: '80%', borderColor: 'black', borderWidth: 1, padding: 10 }}
+//           value={enteredItem}
+//         />
+//         <Button
+//           title='Add'
+//           onPress={addItemHandler}
+//         />
+
+//       </View>
+
+//       <View>
+//         {/* mapping list */}
+//         {newList.map((go) => <Text>{goal}</Text>)}
+//       </View>
 //     </View>
-//   )}
+//   )
 // }
 
+//const toDelete = ''
 
 
 export default class List extends Component {
+
+  state = { toDelete: '', token: ''}
+
+  onChangeText = (key, val) => {
+    this.setState({ [key]: val })
+    //Alert.alert('BTN')
+    this.Delete()
+  }
 
   constructor(props) {
     super(props);
@@ -93,17 +79,17 @@ export default class List extends Component {
       currentUser: '',
       users: [],
       pictures: [],
-      baseAPI: 'https://aa14c53d.ngrok.io',
       selectedUser: '',
+      toDelete:'',
+      token: null,
     }
   }
 
-  //getUsers = this.getUsers.bind(this);
 
   //setting navigation
   static navigationOptions = ({ navigation, navigationOptions }) => {
-    const { params } = navigation.state;
-    //onst {navigate} = this.props.navigation;
+    //const { params } = navigation.state;
+    //const {navigate} = this.props.navigation;
 
     return {
       headerStyle: {
@@ -155,18 +141,6 @@ export default class List extends Component {
       if (res.data.count != 0) {
         console.log('Response.data.pictures: ' + JSON.stringify(res.data.pictures))
 
-        //mapping and rendering
-        // res.data.pictures.map((picList) =>{
-        //   console.log(picList.userPicture)
-        //   return {
-        //     user: picList.user,
-        //     name: picList.name,
-        //     hint: picList.hint,
-        //     userPicture: picList.userPicture,
-        //     _id: picList._id,
-        //     pswd: picList.pswd,
-        // } } )
-
         this.setState({
           pictures: res.data.pictures
         });
@@ -183,10 +157,45 @@ export default class List extends Component {
     this.getUsers()
   }
 
+  
+
+  Delete= ()=> {
+    //Alert.alert(this.state.toDelete)
+if(this.state.toDelete)
+  {const headers = {
+    Headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'authorization': 'Bearer ' + token
+    }
+  }
+
+  apis.deletePic( this.state.toDelete, headers )
+
+  .then((res) => {
+    console.log('Response: ' + JSON.stringify(res))
+    if (res.data.message === 'Picture deleted') {
+      //console.log("Picture deleted");
+      console.log(res.data);
+      Alert.alert('picture deleted');
+    }
+  }).catch((error) => {
+    console.log(JSON.stringify(error));
+    Alert.alert('nothing happened');
+      });}
+      }
+
 
 
   render() {
-    //const { navigate } = this.props.navigation; // it seems it isnt needed
+    
+    //Using the navigation prop we can get the value passed from the previous screen
+    const { navigation } = this.props;   //ok
+    const { navigate } = this.props.navigation;               // ok
+
+    // passed values
+    const token = navigation.getParam('token', 'NO-token');   // ok
+    
 
     return (
 
@@ -195,7 +204,7 @@ export default class List extends Component {
         {/* <MyHooks /> */}
         <Picker
           selectedValue={this.state.selectedUser}
-          style={{ height: 40, width: '100%', backgroundColor: '#A53693' }}
+          style={{ height: 40, width: '100%', backgroundColor: '#A53693', color:'white'}}
           onValueChange={(itemValue, itemIndex) => {
             this.setState({ selectedUser: itemValue })
             // make method to use axios, gettin pictures
@@ -204,75 +213,80 @@ export default class List extends Component {
 
           }>
 
-          
+
           {this.state.users.map(list =>
             <Picker.Item style={styles.allText} key={list._id} label={list._id} value={list._id} />)}
         </Picker>
 
-<ScrollView>
-        {/* mapping list */}
-        {this.state.pictures &&
-          this.state.pictures.map((go) =>
-<View style={{marginTop:10}}>
-            <View style={styles.line} key={go._id} >
+        <ScrollView>
+          {/* mapping list */}
+          {this.state.pictures &&
+            this.state.pictures.map((go) =>
+              <View style={{ marginTop: 10 }}>
+                <View style={styles.line} key={go._id} >
 
-              <View style={styles.smallContainer}>
+                  <View style={styles.smallContainer}>
 
-                <TouchableOpacity
-                // onPress={() => this.props.navigation.navigate('Scrambler')}
-                >
-                  <Image style={styles.iconSmall} source={require('../assets/imgs/delete.png')}></Image>
-                </TouchableOpacity>
+                    <Button
+                    title='x'
+                    type="clear"
+                    onPress={() => this.onChangeText('toDelete', go._id)
+                   
+                    // ,
+                      
+                    //this.Delete(go_id)
+                    }
+                    
+                    >
+                      {/* <Image style={styles.iconSmall} source={require('../assets/imgs/delete.png')}></Image> */}
+                    </Button>
 
-                <TouchableOpacity
-                // onPress={() => this.props.navigation.navigate('Scrambler')}
-                >
-                  <Image style={styles.iconSmall} source={require('../assets/imgs/seeBtn.png')}></Image>
-                </TouchableOpacity>
-<Text style={styles.timeView}>0</Text>
-                
+                    
+                      <Image style={styles.iconSmall2} source={require('../assets/imgs/seeBtn.png')}></Image>
+                    
+                    <Text style={styles.timeView}>0</Text>
 
+
+                  </View>
+
+                  <View>
+                    <Image style={styles.userPicture}
+                      source={{ uri: apis.apiURL + '/' + go.userPicture }}
+                    />
+                  </View>
+                  <View>
+                    <Text style={styles.subTextPicView}>picture name:</Text>
+                    <Text style={styles.textPicView}>{go.name}</Text>
+                    <Text style={styles.subTextPicView}>hint for pswd:</Text>
+                    <Text style={styles.textPicView}>{go.hint}</Text>
+                  </View>
+                </View>
+                <View style={styles.line}>
+
+
+
+                  <TextInput
+                    style={styles.inputGuess}
+                    placeholder="Guess pswd to see the pic"
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                  //onChangeText={val => this.onChangeText('email', val)}
+                  //returnKeyType="go"
+                  ></TextInput>
+
+
+                  <TouchableOpacity
+                  //onpress goes to query
+                  // onPress={() => this.props.navigation.navigate('Scrambler')}
+                  >
+                    <Image style={styles.imageBtn} source={require('../assets/imgs/question.png')}></Image>
+                  </TouchableOpacity>
+                </View>
               </View>
 
-              <View>
-                <Image style={styles.userPicture}
-                  source={{ uri: apis.apiURL + '/' + go.userPicture }}
-                />
-              </View>
-              <View>
-                <Text style={styles.subTextPicView}>picture name:</Text>
-                <Text style={styles.textPicView}>{go.name}</Text>
-                <Text style={styles.subTextPicView}>hint for pswd:</Text>
-                <Text style={styles.textPicView}>{go.hint}</Text>
-              </View>
-            </View>
-            <View style={styles.line}>
+            )}
 
-
-              
-            <TextInput
-          style={styles.inputGuess}
-          placeholder="Guess password to see the picture"
-          autoCapitalize="none"
-          
-          autoCorrect={false}
-          //onChangeText={val => this.onChangeText('email', val)}
-          //returnKeyType="go"
-        ></TextInput>
-
-
-        <TouchableOpacity
-        //onpress goes to query
-                // onPress={() => this.props.navigation.navigate('Scrambler')}
-                >
-                  <Image style={styles.imageBtn} source={require('../assets/imgs/question.png')}></Image>
-                </TouchableOpacity>
-            </View>
-            </View>
-            
-          )}
-
-</ScrollView>
+        </ScrollView>
 
 
 

@@ -275,7 +275,8 @@ export default class ScramblerScreen extends Component {
             <Image style={styles.imageBtn} source={require('../assets/imgs/addPicture.png')} ></Image>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.roundedButton} onPress={() => navigate('List')}>
+          <TouchableOpacity style={styles.roundedButton}
+          onPress={() => navigate('List', {token: token})}>
             <Image style={styles.imageBtn} source={require('../assets/imgs/seeBtn.png')}></Image>
           </TouchableOpacity>
 

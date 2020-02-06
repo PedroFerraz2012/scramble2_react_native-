@@ -132,6 +132,17 @@ userPicture:{
     height: 120,
   },
 iconSmall:{
+  //width: 10,
+  //height: 10,
+  //padding: -3,
+  marginBottom: 12,
+  marginRight: 6,
+  fontSize: 5,
+  borderRadius: 3,
+  backgroundColor: '#A53693',
+  color:"yellow",
+},
+iconSmall2:{
   width: 20,
   height: 20,
   //paddingVertical: 3,
