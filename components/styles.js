@@ -127,7 +127,55 @@ message:{
   padding:8,
   fontSize:25,
   },
-
+userPicture:{
+    width: 200,
+    height: 120,
+  },
+iconSmall:{
+  width: 20,
+  height: 20,
+  //paddingVertical: 3,
+  marginBottom: 12,
+  marginRight: 6,
+},
+timeView:{
+  color: '#201E1E',
+  backgroundColor: 'white',
+  fontWeight: 'bold',
+  padding:8,
+  fontSize:15,
+},
+smallContainer: {
+  alignItems: "center",
+  //flexGrow: 1,
+  //justifyContent: "center",
+  textAlignVertical: "center",
+},
+textPicView: {
+  color: '#201E1E',
+  fontWeight: 'bold',
+  marginLeft: 5,
+  //marginBottom: 5,
+  fontSize:15,
+},
+subTextPicView: {
+  color: '#A53693',
+  
+  marginLeft: 5,
+  marginTop: 5,
+  marginBottom: 5,
+  fontSize:12,
+},
+inputGuess: {
+  height: 40,
+  backgroundColor: '#FFF',
+  alignSelf: 'stretch',
+  padding: 10,
+  marginTop: -10,
+  marginBottom:15,
+  width: 200,
+  //minWidth: '100%'
+},
 })
 
 export default styles;
