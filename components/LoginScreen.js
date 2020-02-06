@@ -47,7 +47,7 @@ export default class LoginScreen extends Component {
 
   Login = () => {
     this.onChangeText('isLoading', true)
-    // this.setState(isLoading= true)
+    
     // axios.post(
     //   // this.state.baseAPI+'/user/login',
     //   api+'/user/login',

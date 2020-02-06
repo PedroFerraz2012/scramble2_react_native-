@@ -2,18 +2,24 @@ import axios from 'axios';
 
 
 const api = axios.create({
-    baseURL: 'https://b91d1ec2.ngrok.io'
+    baseURL: 'https://da93d27b.ngrok.io'
 })
-//const api = 'https://b91d1ec2.ngrok.io'
-
-
-
+export const apiURL = 'https://da93d27b.ngrok.io'
 export const login = (info) => api.post('user/login', info) // working!
-export const savePicture = () => api.post('pictures', newPicture)
+export const savePicture = (newPicture, token) =>
+api.post(
+    'pictures',
+    {newPicture},
+    {headers: {
+        Accept: "*/*",
+        "Content-Type": `multipart/form-data; boundary=${form._boundary}`,
+        'authorization': 'Bearer ' +token
+      }})
 export const loadUser = () => api.get('user?user='+user)
 
 const apis = 
 {
+    apiURL: apiURL,
     login: login,
     savePicture: savePicture,
     loadUser: loadUser
