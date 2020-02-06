@@ -8,7 +8,7 @@ export const apiURL = 'https://f9174e0a.ngrok.io'
 export const login = (info) => api.post('user/login', info) // working!
 export const signUp = (signup,headers) => api.post('/user/signup', signup, headers) // working!
 export const loadUser = () => api.get('user') // working!
-export const deletePic = (pictureId, headers) => api.post('/pictures/'+pictureId, headers)
+export const deletePic = (pictureId, headers) => api.delete('/pictures/'+pictureId, headers)
 
 const apis = 
 {

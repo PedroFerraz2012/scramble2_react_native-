@@ -10,6 +10,7 @@ import {
 import styles from './styles';
 import LogoTitle from './LogoTitle';
 import apis from './api';
+import AsyncStorage from '@react-native-community/async-storage';
 
 export default class LoginScreen extends Component {
 
@@ -86,7 +87,7 @@ export default class LoginScreen extends Component {
         };
         console.log(DB)
         console.log('DB: ' + JSON.stringify(DB));
-
+        this.storeData(res.data.token)
         this.onChangeText('isLoading', false)
         this.props.navigation.navigate('Scrambler', {
           userId: res.data.id,
@@ -102,6 +103,15 @@ export default class LoginScreen extends Component {
          
        });}
 
+
+
+       storeData = async (token) => {
+        try {
+          await AsyncStorage.setItem('@token', token)
+        } catch (e) {
+          console.log(e)
+        }
+      }
 
   // saveState = (DB) => {
   //   //this.setState(this.user = DB)

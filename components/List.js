@@ -11,11 +11,12 @@ import {
   Picker,
   ScrollView,
 } from 'react-native';
-
+import { NavigationEvents } from 'react-navigation';
 import styles from './styles';
 import LogoTitle from './LogoTitle';
 import axios from 'axios';
 import apis from './api';
+import AsyncStorage from '@react-native-community/async-storage';
 
 // const MyHooks = () => {
 //   // using useState to manage state array
@@ -157,16 +158,30 @@ export default class List extends Component {
     this.getUsers()
   }
 
+  getData = async () => {
+    try {
+      const value = await AsyncStorage.getItem('@stoken')
+      if(value !== null) {
+        return value
+      }
+    } catch(e) {
+      return ''
+    }
+  }
   
 
   Delete= ()=> {
     //Alert.alert(this.state.toDelete)
+
+    var token = JSON.stringify (this.getData())
+    if(token){
 if(this.state.toDelete)
-  {const headers = {
+  {
+    const headers = {
     Headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
-      'authorization': 'Bearer ' + token
+      'authorization': 'Bearer ' +token
     }
   }
 
@@ -178,12 +193,15 @@ if(this.state.toDelete)
       //console.log("Picture deleted");
       console.log(res.data);
       Alert.alert('picture deleted');
+      {this.props.navigation.navigate('List')}
     }
   }).catch((error) => {
     console.log(JSON.stringify(error));
-    Alert.alert('nothing happened');
-      });}
-      }
+    Alert.alert(error);
+      });
+    }else Alert.alert('didnt get the picture id')
+    }else Alert.alert('No token');
+    }
 
 
 
@@ -200,6 +218,10 @@ if(this.state.toDelete)
     return (
 
       <View style={styles.container}>
+        <NavigationEvents
+                onDidFocus={() => Alert.alert('Refreshed')}
+                />
+
 
         {/* <MyHooks /> */}
         <Picker
@@ -228,15 +250,9 @@ if(this.state.toDelete)
                   <View style={styles.smallContainer}>
 
                     <Button
-                    title='x'
-                    type="clear"
-                    onPress={() => this.onChangeText('toDelete', go._id)
-                   
-                    // ,
-                      
-                    //this.Delete(go_id)
-                    }
-                    
+                    onPress={() => this.onChangeText('toDelete', go._id) }
+                    title="x"
+                    color="#841584"
                     >
                       {/* <Image style={styles.iconSmall} source={require('../assets/imgs/delete.png')}></Image> */}
                     </Button>
