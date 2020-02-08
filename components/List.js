@@ -216,7 +216,15 @@ export default class List extends Component {
 
   
   Guess = key => event => {
-    Alert.alert('That is your guess ' + this.state.guessing + ' id: ' + key)
+    //Alert.alert('That is your guess ' + this.state.guessing + ' id: ' + key)
+    // key is the whole Picture objetct
+    // compare guessing with pswd
+if(this.state.guessing === key.pswd){
+  Alert.alert('You got it')
+} else{
+  Alert.alert('oh nooo! Try again')
+}
+
   }
 
   render() {
@@ -321,7 +329,7 @@ export default class List extends Component {
 
 
                   <TouchableOpacity
-                    onPress={this.Guess(go._id)}
+                    onPress={this.Guess(go)}
                   >
 
 
