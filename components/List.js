@@ -10,7 +10,8 @@ import {
   Alert,
   Picker,
   ScrollView,
-  ToastAndroid
+  ToastAndroid,
+  Group
 } from 'react-native';
 import { NavigationEvents } from 'react-navigation';
 import styles from './styles';
@@ -66,13 +67,19 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 export default class List extends Component {
 
-  state = { toDelete: '', token: ''}
+  state = { toDelete: '', token: '', selectedUser: '', guessing: '', guessId: '' }
 
   onChangeText = (key, val) => {
     this.setState({ [key]: val })
     //Alert.alert('BTN')
     this.Delete()
   }
+
+  onChangeText2 = (key, val) => {
+    this.setState({ [key]: val })
+  }
+
+
 
   constructor(props) {
     super(props);
@@ -82,7 +89,7 @@ export default class List extends Component {
       users: [],
       pictures: [],
       selectedUser: '',
-      toDelete:'',
+      toDelete: '',
       token: null,
     }
   }
@@ -117,7 +124,7 @@ export default class List extends Component {
     //Alert.alert("getUser accessed")
     apis.loadUser().then((res) => {
       console.log('Response.data.users: ' + JSON.stringify(res.data.users))
-      res.data.users.map((usersList) => console.log(usersList._id))//testing data
+      res.data.users.map((usersList) => console.log(usersList.email))//testing data
 
       this.setState({
         users: res.data.users
@@ -159,111 +166,124 @@ export default class List extends Component {
     this.getUsers()
   }
 
-  
+
+
   getData = async () => {
     try {
       const value = await AsyncStorage.getItem('token')
-      if(value !== null) {
-        console.log('retrieve token: '+value)
+      if (value !== null) {
+        console.log('retrieve token: ' + value)
         return value
       }
-    } catch(e) {
+    } catch (e) {
       console.log(e)
       return ''
     }
   }
-  
 
-  Delete= ()=> {
+
+  Delete = () => {
     //Alert.alert(this.state.toDelete)
 
-    var token = JSON.stringify (this.getData())
-    if(token){
-if(this.state.toDelete)
-  {
-    const headers = {
-    Headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-      'authorization': 'Bearer '+token
-    }
+    var token = JSON.stringify(this.getData())
+    if (token) {
+      if (this.state.toDelete) {
+        const headers = {
+          Headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'authorization': 'Bearer ' + token
+          }
+        }
+
+        apis.deletePic(this.state.toDelete, headers)
+
+          .then((res) => {
+            console.log('Response: ' + JSON.stringify(res))
+            if (res.data.message === 'Picture deleted') {
+              //console.log("Picture deleted");
+              console.log(res.data);
+              Alert.alert('picture deleted');
+              { this.props.navigation.navigate('Refresh') }
+            }
+          }).catch((error) => {
+            console.log(JSON.stringify(error));
+            Alert.alert(error);
+          });
+      } else Alert.alert('didnt get the picture id')
+    } else Alert.alert('No token');
   }
 
-  apis.deletePic( this.state.toDelete, headers )
-
-  .then((res) => {
-    console.log('Response: ' + JSON.stringify(res))
-    if (res.data.message === 'Picture deleted') {
-      //console.log("Picture deleted");
-      console.log(res.data);
-      Alert.alert('picture deleted');
-      {this.props.navigation.navigate('Refresh')}
-    }
-  }).catch((error) => {
-    console.log(JSON.stringify(error));
-    Alert.alert(error);
-      });
-    }else Alert.alert('didnt get the picture id')
-    }else Alert.alert('No token');
-    }
-
-
+  
+  Guess = key => event => {
+    Alert.alert('That is your guess ' + this.state.guessing + ' id: ' + key)
+  }
 
   render() {
-    
+
     //Using the navigation prop we can get the value passed from the previous screen
     const { navigation } = this.props;   //ok
     const { navigate } = this.props.navigation;               // ok
 
     // passed values
     const token = navigation.getParam('token', 'NO-token');   // ok
-    
+    const userId = navigation.getParam('userId', '');  // ok
+
+    console.log(userId)
+
+
 
     return (
 
       <View style={styles.container}>
         <NavigationEvents
-                onDidFocus={() => ToastAndroid.show('Refreshed', ToastAndroid.LONG)}
-                />
+          onDidFocus={() =>
+            ToastAndroid.show('Refreshed', ToastAndroid.LONG
+            )}
+        />
 
 
         {/* <MyHooks /> */}
         <Picker
           selectedValue={this.state.selectedUser}
-          style={{ height: 40, width: '100%', backgroundColor: '#A53693', color:'white'}}
+          style={{ height: 40, width: '100%', backgroundColor: '#A53693', color: 'white' }}
           onValueChange={(itemValue, itemIndex) => {
             this.setState({ selectedUser: itemValue })
-            // make method to use axios, gettin pictures
+            // gettin pictures
             this.getUserPicture(itemValue)
-          }
+          }}
+        >
 
-          }>
-
+          <Picker.Item style={styles.allText} key='empty' label='Pick user' value='0' />
 
           {this.state.users.map(list =>
-            <Picker.Item style={styles.allText} key={list._id} label={list._id} value={list._id} />)}
+            <Picker.Item style={styles.allText} key={list._id} label={list.email} value={list._id} />)}
         </Picker>
 
+
         <ScrollView>
+
           {/* mapping list */}
+
           {this.state.pictures &&
-            this.state.pictures.map((go) =>
+            this.state.pictures.map((go, index) =>
               <View style={{ marginTop: 10 }}>
                 <View style={styles.line} key={go._id} >
 
                   <View style={styles.smallContainer}>
 
+
                     <Button
-                    onPress={() => this.onChangeText('toDelete', go._id) }
-                    title="x"
-                    color="#841584"
+                      onPress={() => this.onChangeText('toDelete', go._id)}
+                      title="x"
+                      color="#841584"
                     >
                       {/* <Image style={styles.iconSmall} source={require('../assets/imgs/delete.png')}></Image> */}
                     </Button>
 
-                    
-                      <Image style={styles.iconSmall2} source={require('../assets/imgs/seeBtn.png')}></Image>
-                    
+
+                    <Image style={styles.iconSmall2} source={require('../assets/imgs/seeBtn.png')}></Image>
+
                     <Text style={styles.timeView}>0</Text>
 
 
@@ -285,20 +305,26 @@ if(this.state.toDelete)
 
 
 
+
+
                   <TextInput
                     style={styles.inputGuess}
                     placeholder="Guess pswd to see the pic"
                     autoCapitalize="none"
                     autoCorrect={false}
-                  //onChangeText={val => this.onChangeText('email', val)}
-                  //returnKeyType="go"
+                    value={this.state.guessing}
+                    onChangeText={guessing => this.setState({ guessing })}
+
+
+                  //onChangeText={() => this.onChangeText2('guessing', this.state.guessing)}
                   ></TextInput>
 
 
                   <TouchableOpacity
-                  //onpress goes to query
-                  // onPress={() => this.props.navigation.navigate('Scrambler')}
+                    onPress={this.Guess(go._id)}
                   >
+
+
                     <Image style={styles.imageBtn} source={require('../assets/imgs/question.png')}></Image>
                   </TouchableOpacity>
                 </View>

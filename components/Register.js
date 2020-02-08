@@ -1,20 +1,20 @@
 import React, { Component } from "react";
 import {
   AppRegistry,
-  StyleSheet,
+  //StyleSheet,
   Text,
   View,
   TextInput,
   TouchableHighlight,
-  Image,
-  KeyboardAvoidingView,
-  AsyncStorage,
+  //Image,
+  //KeyboardAvoidingView,
+  //AsyncStorage,
   Alert
 } from "react-native";
 import styles from './styles.js';
 import LogoTitle from './LogoTitle';
 import { StackNavigator } from "react-navigation";
-import axios from 'axios';
+//import axios from 'axios';
 import apis from './api';
 
 export default class Register extends Component {
@@ -49,7 +49,7 @@ export default class Register extends Component {
   };}
 
   Register = () => {
-    Alert.alert('btn register ok')
+    //Alert.alert('btn register ok')
 
     const signup = {
         name: this.state.name,

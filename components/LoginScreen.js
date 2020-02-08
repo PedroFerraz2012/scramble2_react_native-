@@ -12,9 +12,33 @@ import LogoTitle from './LogoTitle';
 import apis from './api';
 import AsyncStorage from '@react-native-community/async-storage';
 
+class BlinkingText extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { showText: true };
+
+    // Change the state every second 
+    setInterval(() => {
+      this.setState(previousState => {
+        return { showText: !previousState.showText };
+      });
+    },
+      // Define any blinking time.
+      300);
+  }
+
+  render() {
+    let display = this.state.showText ? this.props.text : ' ';
+    return (
+      <Text style={styles.message}>{display}</Text>
+    );
+  }
+}
+
+
 export default class LoginScreen extends Component {
 
-  state = { email: '', password: '', pageTitle: 'LOGIN', isLoading: false}
+  state = { email: '', password: '', pageTitle: 'LOGIN', isLoading: false }
   onChangeText = (key, val) => {
     this.setState({ [key]: val })
   }
@@ -27,113 +51,99 @@ export default class LoginScreen extends Component {
       isAuthenticated: false,
     }
   }
-  
+
 
   //using navigation
-  static navigationOptions = ({navigation, navigationOptions})=>{
-    const {params} = navigation.state;
+  static navigationOptions = ({ navigation, navigationOptions }) => {
+    const { params } = navigation.state;
 
-    return{
-    headerStyle: {
-      backgroundColor: "#FFF212"
-    },
-    
-    headerTitleStyle: {
-      fontWeight: 'bold',
-      textAlign: "center",
-    },
-    title: 'LOGIN',
-    headerTitle: () => <View style={styles.line}><LogoTitle/><Text style={styles.allText}>  LOGIN</Text></View>
-  };}
+    return {
+      headerStyle: {
+        backgroundColor: "#FFF212"
+      },
+
+      headerTitleStyle: {
+        fontWeight: 'bold',
+        textAlign: "center",
+      },
+      title: 'LOGIN',
+      headerTitle: () => <View style={styles.line}><LogoTitle /><Text style={styles.allText}>  LOGIN</Text></View>
+    };
+  }
+
+
 
   Login = () => {
     this.onChangeText('isLoading', true)
-    
+
     // axios.post(
     //   // this.state.baseAPI+'/user/login',
     //   api+'/user/login',
-    const user =  {
+    const user = {
       email: this.state.email,
       password: this.state.password,
       Headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
-    }};
+      }
+    };
     //console.log(user);
     apis.login(user)
-    //   api+'/user/login'.post(
-    //   {
-    //     email: this.state.email,
-    //     password: this.state.password
-    //   },
-    //   {
-    //     Headers: {
-    //       'Accept': 'application/json',
-    //       'Content-Type': 'application/json'
-    //     }
-    //   }
-    // )
-    .then((res) => {
-      
-      console.log('Response: ' + JSON.stringify(res))
 
-      if (res.data.token) {
-        console.log("logedIn");
-        console.log(res.data)
-        const DB = {
-          userId: res.data.id,
-          token: res.data.token,
-          isAuthenticated: true
-        };
-        console.log(DB)
-        console.log('DB: ' + JSON.stringify(DB));
-        this.storeData(res.data.token)
-        this.onChangeText('isLoading', false)
-        this.props.navigation.navigate('Scrambler', {
-          userId: res.data.id,
-          token: res.data.token,
-          isAuthenticated: true,
-        })
+      .then((res) => {
 
-        //this.saveState(DB)
-      }
-    }).catch((error) => {
-      Alert.alert(JSON.stringify(error.message));
-        console.log(JSON.stringify(error));
-         
-       });}
+        console.log('Response: ' + JSON.stringify(res))
 
+        if (res.data.token) {
+          console.log("logedIn");
+          console.log(res.data)
+          const DB = {
+            userId: res.data.id,
+            token: res.data.token,
+            isAuthenticated: true
+          };
+          console.log(DB)
+          console.log('DB: ' + JSON.stringify(DB));
+          this.storeData(res.data.token)
+          this.onChangeText('isLoading', false)
+          this.props.navigation.navigate('Scrambler', {
+            userId: res.data.id,
+            token: res.data.token,
+            isAuthenticated: true,
+          })
 
-
-       storeData = async (token) => {
-        try {
-          await AsyncStorage.setItem('token', token+' ')
-        } catch (e) {
-          console.log(e)
+          //this.saveState(DB)
         }
-      }
+      }).catch((error) => {
+        Alert.alert(JSON.stringify(error.message));
+        console.log(JSON.stringify(error));
 
-  // saveState = (DB) => {
-  //   //this.setState(this.user = DB)
-  //   console.log('DB AGAIN: ' + JSON.stringify(DB));
-  //   this.props.navigation.navigate('Scrambler', DB)
-  // }
+      });
+  }
 
-  // notAuth = () => {
-  //   Alert.alert('Something went wrong')
-  // }
+
+
+  storeData = async (token) => {
+    try {
+      await AsyncStorage.setItem('token', token + ' ')
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
 
   render() {
-    const {navigate} = this.props.navigation;
-  
+    const { navigate } = this.props.navigation;
+
 
     return (
-      
-      <View  style={styles.container}>
 
-{this.state.isLoading &&
-<Text style={styles.message}>L O A D I N G</Text>
-}      
+      <View style={styles.container}>
+
+
+        {this.state.isLoading &&
+          <BlinkingText text='L O A D I N G' />
+        }
         <TextInput
           style={styles.input}
           placeholder="Type your email"
@@ -154,10 +164,10 @@ export default class LoginScreen extends Component {
           returnKeyType="go"
         ></TextInput>
 
-        
+
         <TouchableOpacity style={styles.button} onPress={this.Login}>
-            <Text style={styles.buttonText}>Login</Text>
-          </TouchableOpacity>
+          <Text style={styles.buttonText}>Login</Text>
+        </TouchableOpacity>
 
         <Text style={styles.allText}
           onPress={() => this.props.navigation.navigate("Register")}>
@@ -168,7 +178,7 @@ export default class LoginScreen extends Component {
           title="Forget Password">
           Forget Password</Text>
 
-          </View>
+      </View>
 
     );
   }
