@@ -134,7 +134,7 @@ export default class ScramblerScreen extends Component {
           photo: response
         });
         // console.log('\n' + '\n' + '\n' + '\n' + '\n' + '\n' + '\n' + '\n' + '\n')
-        //console.log(response)
+        console.log(response)
       }
     });
   }

@@ -26,6 +26,7 @@ import Register from './components/Register';
 import ForgetPassword from './components/ForgetPassword';
 import List from './components/List';
 import Refresh from './components/refresh';
+import Show from './components/show';
 
 const MainNavigator = createStackNavigator({
   Home: {screen: HomeScreen},
@@ -34,7 +35,8 @@ const MainNavigator = createStackNavigator({
   Register: {screen: Register},
   ForgetPassword: {screen: ForgetPassword},
   List: {screen: List},
-  Refresh: {screen: Refresh}
+  Refresh: {screen: Refresh},
+  Show: {screen: Show}
 });
 
 const App = createAppContainer(MainNavigator);

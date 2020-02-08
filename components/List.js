@@ -221,6 +221,10 @@ export default class List extends Component {
     // compare guessing with pswd
 if(this.state.guessing === key.pswd){
   Alert.alert('You got it')
+  //takes to other page to see the right picture
+  this.props.navigation.navigate('Show', {
+    pic: key.userPicture})
+  
 } else{
   Alert.alert('oh nooo! Try again')
 }
@@ -299,7 +303,7 @@ if(this.state.guessing === key.pswd){
 
                   <View>
                     <Image style={styles.userPicture}
-                      source={{ uri: apis.apiURL + '/' + go.userPicture }}
+                      source={{ uri: apis.apiURL + '/' + go.blurPicture }}
                     />
                   </View>
                   <View>
