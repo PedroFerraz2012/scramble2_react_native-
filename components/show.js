@@ -1,12 +1,12 @@
 import React from 'react';
 import {
-  TouchableOpacity,
+  
   View,
   Text,
   Image,
 } from 'react-native';
 import styles from './styles';
-//import axios from 'axios';
+
 import LogoTitle from './LogoTitle';
  
 import apis from './api';
@@ -38,7 +38,8 @@ class Show extends React.Component {
         //flex: 1,
       },
 
-      headerTitle: () => <View style={styles.line}><LogoTitle /><Text style={styles.allText}>  Unscrambled</Text></View>
+      headerTitle: () => <View style={styles.line}><LogoTitle /><Text style={styles.allText}>
+        Unscrambled</Text></View>
     };
   }
 
